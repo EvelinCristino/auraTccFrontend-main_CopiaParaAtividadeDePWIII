@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Home - Aura</title>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom green tones matching the screenshot */
+    :root {
+      --green-bg: #758352;
+      /* Sidebar background */
+      --green-border: #7d9466;
+      /* Sidebar border */
+      --bg-main: #f6f2ed;
+      /* Main background */
+      --text-dark: #4a2f19;
+      /* Dark brown text */
+      --text-light: #5d4a3d;
+      /* Medium brown text */
+      --box-bg: #ffffff;
+      /* White squares background */
+      --box-light-bg: #f0f0ef;
+      --btn-bg: #d9c8b9;
+      /* Add button background */
+      --btn-hover-bg: #c7b19a;
+      --input-bg: #fff;
+      --icon-color: #4a2f19;
+    }
+
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: var(--bg-main);
+      font-family: 'Urbanist', sans-serif;
+      color: var(--text-dark);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+    }
+
+    /* Container full screen with border radius and border */
+    .app-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      background: var(--bg-main);
+      border-radius: 0;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      background-color: #73804F;
+      width: 100px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      margin: 10px 0;
+      background-color: transparent;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .sidebar img {
+      width: 68px;
+      height: 28px;
+    }
+
+    .sidebar .icons {
+      margin-top: 130%;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    /* Main content panel */
+    main.content {
+      flex-grow: 1;
+      padding: 32px 48px;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      background: var(--bg-main);
+      color: var(--text-dark);
+      position: relative;
+      overflow-y: auto;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* Top right gear/settings icon */
+    main.content .settings-icon {
+      position: absolute;
+      top: 32px;
+      right: 48px;
+      width: 28px;
+      height: 28px;
+      stroke: var(--text-dark);
+      stroke-width: 1.6;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    main.content .settings-icon:hover {
+      opacity: 1;
+    }
+
+    /* Date text */
+    main.content .date {
+      font-weight: 550;
+      font-size: 21px;
+      margin-bottom: 5%;
+      user-select: none;
+      color: #4F3422;
+    }
+
+    /* User greeting container */
+    .greeting-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 36px;
+    }
+
+    /* User icon circle background */
+    .user-icon-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background-color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-dark);
+      font-size: 26px;
+      user-select: none;
+      box-shadow: 0 0 6px #d9d2c6;
+    }
+
+    /* Greeting text - Olá, <Name> */
+    .greeting-text {
+      font-weight: 900;
+      font-size: 33px;
+      user-select: none;
+    }
+
+    /* Wave emoji with margin left */
+    .greeting-wave {
+      width: 35px;
+      height: 35px;
+      user-select: none;
+    }
+
+    /* Search/new chat input */
+    /* Container do novo chat com avatar */
+    .new-chat-container {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 1500px;
+      /* aumenta a caixa */
+      background-color: var(--input-bg);
+      padding: 6px 12px;
+      box-shadow: 0 0 5px #d9d2c6;
+      border-radius: 16px;
+      /* caixa branca com cantos arredondados */
+      box-sizing: border-box;
+      margin-bottom: 24px;
+    }
+
+    /* Avatar do chat */
+    .chat-avatar {
+      width: 48px;
+      /* maior tamanho */
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 12px;
+      /* leve arredondado */
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .chat-avatar img {
+      width: 100%;
+      height: 100%;
+      margin-left: auto;
+      object-fit: right;
+      margin-top: 5px;
+    }
+
+    /* Input de chat ajustado */
+    .new-chat-input {
+      flex-grow: 1;
+      height: 40px;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      background: transparent;
+      /* para ficar dentro da caixa branca */
+      color: #4a2f19;
+      margin-left: 12px
+    }
+
+    /* Section titles */
+    .section-title {
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: 48px;
+      margin-bottom: 24px;
+      user-select: none;
+    }
+
+    /* Metrics container */
+    .metrics-container {
+      display: flex;
+      gap: 52px;
+      user-select: none;
+      align-items: stretch;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .metric-box {
+      align-items: center;
+      position: relative;
+      /* permite posicionar o ícone dentro do card */
+      padding: 16px 20px;
+      background: var(--box-bg);
+      border-radius: 12px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      font-size: 20px;
+      font-weight: 650;
+      color: var(--text-dark);
+      cursor: pointer;
+      justify-content: flex-start;
+      transition: background-color 0.2s ease;
+      width: 400px;
+      /* ajuste se necessário */
+      height: 200px;
+      /* altura fixa para manter a proporção */
+    }
+
+    .metric-box:hover {
+      background-color: var(--box-light-bg);
+    }
+
+    .metric-icon {
+      position: absolute;
+      bottom: 16px;
+      /* distância da borda inferior */
+      right: 20px;
+      /* distância da borda direita */
+      width: 35px;
+      height: 35px;
+      stroke: var(--text-dark);
+    }
+
+    .metric-label {
+      display: block;
+      font-size: 16px;
+      line-height: 1.25;
+      color: var(--text-dark);
+      margin: 0;
+      padding-right: 70px;
+      text-align: left;
+    }
+
+
+    /* Reminders container */
+    .reminders-container {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px 24px;
+      user-select: none;
+      max-height: 300px;
+      /* altura máxima */
+      overflow-y: auto;
+      /* scroll vertical */
+      padding-right: 4px;
+    }
+
+    /* Reminder card */
+    .reminder-card {
+      background: var(--box-bg);
+      border-radius: 16px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 0 6px #d9d2c6;
+      padding-left: 16px;
+      cursor: default;
+      user-select: none;
+      box-sizing: border-box;
+      position: relative;
+      padding-right: 60px;
+    }
+
+    .reminder-icon {
+      background: #dfd4c9;
+      border-radius: 8px;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-dark);
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke: #4a2f19;
+      flex-shrink: 0;
+      filter: drop-shadow(0 0 1px #c7b19a);
+    }
+
+    /* Reminder text container */
+    .reminder-text {
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+      line-height: 1.2;
+      color: var(--text-light);
+    }
+
+    .reminder-title {
+      font-weight: 700;
+      color: var(--text-dark);
+      user-select: text;
+    }
+
+    .reminder-card.completed {
+      opacity: 0.5;
+      text-decoration: line-through;
+    }
+
+    /* Button "Adicionar" (Add) */
+    .add-reminder-btn {
+      font-weight: 600;
+      font-size: 14px;
+      background-color: var(--btn-bg);
+      padding: 6px 16px;
+      border-radius: 24px;
+      color: var(--text-dark);
+      cursor: pointer;
+      align-self: flex-start;
+      border: none;
+      margin-top: 100px;
+      margin-left: auto;
+      box-shadow: 0 0 6px #d9d2c6;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-reminder-btn:hover {
+      background-color: var(--btn-hover-bg);
+    }
+
+    .add-reminder-btn:focus {
+      outline: 2px solid var(--green-border);
+      outline-offset: 2px;
+    }
+
+    /* Reminder actions (check + delete) */
+    .reminder-actions {
+      position: absolute;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .reminder-actions button {
+      border: none;
+      background: none;
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+    }
+
+    .add-reminder-btn {
+      margin-top: 16px;
+    }
+
+    /* Icon plus circle for the add button */
+    .add-icon-circle {
+      border: 1.5px solid var(--text-dark);
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .add-icon-circle svg {
+      stroke: var(--text-dark);
+      stroke-width: 1.6;
+    }
+
+    /*Configuração*/
+    .settings-btn {
+      position: absolute;
+      top: 32px;
+      right: 48px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-dark);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .settings-btn:hover {
+      opacity: 1;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Caixa do modal */
+    .modal-content {
+      background: #f9f9f9;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 1100px;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    /* Cabeçalho */
+    .modal-header {
+      background: #6b7f59;
+      color: white;
+      font-size: 32px;
+      font-weight: bold;
+      padding: 48px;
+      border-radius: 10px 10px 0 0;
+    }
+
+    /* Botão fechar */
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 32px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Perguntas */
+    .question {
+      margin: 20px 30px;
+    }
+
+    .question p {
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin: 4px 0;
+      cursor: pointer;
+    }
+
+    button[type="submit"] {
+      margin-top: 15px;
+      margin-left: 45%;
+      margin-bottom: 15px;
+      padding: 10px 20px;
+      background: #4f6d4f;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Modal de confirmação */
+    .confirm-content {
+      background: #f9f6f3;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 900px;
+      height: 70%;
+      max-height: 900px;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .confirm-content .close {
+      color: #333;
+      top: 15px;
+      right: 20px;
+    }
+
+    .checkmark {
+      font-size: 60px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #6b7f59;
+      margin-bottom: 15px;
+    }
+
+    .confirm-content h2 {
+      color: #4b3b2b;
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-container" role="main">
+    <nav class="sidebar">
+      <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+      <div class="icons">
+        <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+            style="width: 35px; height: 25px; margin-top:50%"></a>
+        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+            style="width: 38px; margin-top: 160%;"></a>
+      </div>
+      <div class="spacer"></div>
+      <a href="#"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+    </nav>
+
+    <main class="content" role="region" aria-label="Página inicial da plataforma">
+      <time class="date" aria-live="polite" id="date-display" datetime=""></time>
+
+      <section aria-label="Saudação do usuário" class="greeting-container">
+        <div class="user-icon-circle" aria-hidden="true" role="img" title="Ícone de usuário">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" width="29" height="32"
+            viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+            <path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" />
+          </svg>
+        </div>
+        <div class="greeting-text" id="greeting-text" aria-live="polite"></div>
+        <div class="greeting-wave" aria-hidden="true">
+          <img src="img/home/olá dr.png" alt="mão">
+        </div>
+      </section>
+
+      <!-- Botão de Configurações no canto superior direito -->
+      <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
+        </svg>
+      </button>
+
+
+      <div class="new-chat-container">
+        <div class="chat-avatar" title="Converse com Aurora" tabindex="0" role="button"
+          aria-label="Abrir chat com Aurora">
+          <img src="img/Aurora - avatar.png" alt="Aurora" />
+        </div>
+        <a href="aurora.html" type="search" class="new-chat-input" id="newChatInput" aria-label="Novo chat" placeholder="Novo chat"
+          autocomplete="off"> Converse com Aurora </a>
+      </div>
+
+      <section aria-label="Métricas da plataforma">
+        <h2 class="section-title">Métricas</h2>
+        <div class="metrics-container" role="group"
+          aria-label="Botões das funcionalidades: Screening, Diary, Setting Mood">
+          <button class="metric-box" type="button" aria-describedby="desc-screening" tabindex="0" id="openModalBtn"
+            onclick="abrirTriagem()">
+            <img src="img/metricas/LUPA.png" alt="" class="metric-icon" fill="none" stroke="var(--green-bg)"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" role="img"
+              aria-hidden="true" focusable="false">
+            <circle cx="5" cy="19" r="2"></circle>
+            <circle cx="12" cy="5" r="2"></circle>
+            <circle cx="19" cy="14" r="2"></circle>
+            <path d="M5 17v-6a1 1 0 0 1 1-1h2"></path>
+            <path d="M12 7v6"></path>
+            <path d="M19 16v1a1 1 0 0 1-1 1h-2"></path>
+            <path d="M5 17h14"></path>
+            </svg>
+            <span class="metric-label" id="desc-screening">Faça uma triagem</span>
+          </button>
+
+          <a href="diario.html">
+          <button class="metric-box" type="button" aria-describedby="desc-diary" tabindex="0" id="btn-diary"
+            aria-label="Configuração de humor">
+            <img src="img/metricas/cara.png" alt="" class="metric-icon" fill="none" stroke="var(--green-bg)"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" role="img"
+              aria-hidden="true" focusable="false">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span class="metric-label" id="desc-diary">Registre seu humor</span>
+          </button>
+          </a>
+
+          <a href="diario.html">
+          <button class="metric-box" type="button" aria-describedby="desc-setting-mood" tabindex="0"
+            id="btn-setting-mood" aria-label="Diário">
+            <svg class="metric-icon" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="var(--green-bg)"
+              stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" role="img"
+              aria-hidden="true" focusable="false">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span class="metric-label" id="desc-setting-mood">Escreva no seu diário</span>
+          </button>
+          </a>
+        </div>
+      </section>
+
+      <section aria-label="Lembretes do usuário" class="reminders-section">
+        <div class="section-header" style="display:flex; justify-content: space-between; align-items: flex-end;">
+          <h2 class="section-title" style="margin-bottom: 12px;">Lembretes</h2>
+          <button class="add-reminder-btn" style="margin-top: 40px;" type="button" id="addReminderBtn"
+            aria-label="Adicionar lembrete" title="Adicionar lembrete">
+            Adicionar
+            <span class="add-icon-circle" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="reminders-container" id="remindersContainer" aria-live="polite" aria-atomic="true">
+          <!-- Reminder items dynamically inserted here -->
+        </div>
+      </section>
+
+      <div class="modal" id="triagemModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            Triagem
+            <span class="close" id="closeModal">&times;</span>
+          </div>
+
+          <form id="triagemForm">
+            <!-- Pergunta 1 -->
+            <div class="question">
+              <p>Qual seu principal motivo por estar buscando suporte?</p>
+              <label><input type="radio" name="motivo" value="Lidar melhor com emoções"> Lidar melhor com
+                emoções</label>
+              <label><input type="radio" name="motivo" value="Ansiedade"> Ansiedade</label>
+              <label><input type="radio" name="motivo" value="Problemas familiares"> Problemas familiares</label>
+              <label><input type="radio" name="motivo" value="Outro"> Outro</label>
+            </div>
+
+            <!-- Pergunta 2 -->
+            <div class="question">
+              <p>Há quanto tempo você percebe e está sentindo esses sintomas?</p>
+              <label><input type="radio" name="tempoSintomas" value="Menos de 1 semana"> Menos de 1 semana</label>
+              <label><input type="radio" name="tempoSintomas" value="1 a 4 semanas"> 1 a 4 semanas</label>
+              <label><input type="radio" name="tempoSintomas" value="1 a 3 meses"> 1 a 3 meses</label>
+              <label><input type="radio" name="tempoSintomas" value="Mais de 3 meses"> Mais de 3 meses</label>
+            </div>
+
+            <!-- Pergunta 3 -->
+            <div class="question">
+              <p>Com que frequência você sente os sintomas mencionados?</p>
+              <label><input type="radio" name="frequencia" value="Raramente"> Raramente</label>
+              <label><input type="radio" name="frequencia" value="Algumas vezes por semana"> Algumas vezes por
+                semana</label>
+              <label><input type="radio" name="frequencia" value="Todos os dias"> Todos os dias</label>
+              <label><input type="radio" name="frequencia" value="Não sei dizer"> Não sei dizer</label>
+            </div>
+
+            <!-- Pergunta 4 -->
+            <div class="question">
+              <p>Você tem preferência de gênero para o(a) profissional?</p>
+              <label><input type="radio" name="genero" value="Feminino"> Sim, feminino</label>
+              <label><input type="radio" name="genero" value="Masculino"> Sim, masculino</label>
+              <label><input type="radio" name="genero" value="Sem preferência"> Sem preferência</label>
+            </div>
+
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Modal de confirmação -->
+      <div class="modal" id="confirmModal">
+        <div class="confirm-content">
+          <span class="close" id="closeConfirm">&times;</span>
+          <div class="checkmark">✔</div>
+          <h2>Triagem Enviada!</h2>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      // For demo purposes: Simulate user registry with name stored locally
+      const defaultUser = 'Eliana';
+      const userNameKey = 'platformUserName';
+
+      // Set or get user name from localStorage
+      function getUserName() {
+        let name = localStorage.getItem(userNameKey);
+        if (!name) {
+          localStorage.setItem(userNameKey, defaultUser);
+          name = defaultUser;
+        }
+        return name;
+      }
+
+      // Date display formatted: "Qui, 04 Abr, 2025"
+      const dateDisplay = document.getElementById('date-display');
+      const greetingText = document.getElementById('greeting-text');
+
+      function formatDate(date) {
+        const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+        const dayName = days[date.getDay()];
+        const dayNumber = String(date.getDate()).padStart(2, '0');
+        const monthName = months[date.getMonth()];
+        const year = date.getFullYear();
+        return `${dayName}, ${dayNumber} ${monthName}, ${year}`;
+      }
+
+      // Initialize date
+      function updateDate() {
+        const now = new Date();
+        dateDisplay.textContent = formatDate(now);
+        dateDisplay.setAttribute('datetime', now.toISOString());
+      }
+
+      // Initialize greeting text
+      function updateGreeting() {
+        const name = getUserName();
+        greetingText.textContent = `Olá, ${name} `;
+      }
+
+      // REMINDERS FUNCTIONALITY
+      // Local storage key for reminders
+      const remindersStorageKey = 'platformReminders';
+
+      // Default reminders if none saved
+      const defaultReminders = [
+        { id: 1, title: 'Lembrete 1', description: 'Consulta legal' },
+        { id: 2, title: 'Lembrete 2', description: 'Consulta legal' },
+        { id: 3, title: 'Lembrete 3', description: 'Consulta legal' },
+        { id: 4, title: 'Lembrete 4', description: 'Consulta legal' }
+      ];
+
+      // Load reminders from localStorage or default
+      function loadReminders() {
+        const remindersJson = localStorage.getItem(remindersStorageKey);
+        if (remindersJson) {
+          try {
+            const rs = JSON.parse(remindersJson);
+            if (Array.isArray(rs)) return rs;
+          } catch (e) {
+            return defaultReminders;
+          }
+        }
+        return defaultReminders;
+      }
+
+      // Save reminders to localStorage
+      function saveReminders(reminders) {
+        localStorage.setItem(remindersStorageKey, JSON.stringify(reminders));
+      }
+
+      // Reminder icon SVG markup
+      const reminderIconSVG = `
+        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#4a2f19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+          <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>`;
+
+      // Render reminders UI
+      function renderReminders(reminders) {
+        const container = document.getElementById('remindersContainer');
+        container.innerHTML = '';
+        reminders.forEach((reminder, idx) => {
+          const reminderDiv = document.createElement('div');
+          reminderDiv.className = 'reminder-card';
+          reminderDiv.setAttribute('tabindex', '-1');
+          reminderDiv.setAttribute('role', 'listitem');
+          reminderDiv.innerHTML = `
+            <div class="reminder-icon" aria-hidden="true">${reminderIconSVG}</div>
+            <div class="reminder-text">
+              <div class="reminder-title">${escapeHTML(reminder.title)}</div>
+              <div>${escapeHTML(reminder.description)}</div>
+            </div>`;
+          container.appendChild(reminderDiv);
+        });
+      }
+
+      // Escape HTML to avoid injection
+      function escapeHTML(str) {
+        return str.replace(/[&<>"']/g, function (m) {
+          return ({
+            '&': "&amp;",
+            '<': "&lt;",
+            '>': "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+          })[m];
+        });
+      }
+
+      // Add reminder logic
+      function addReminder() {
+        const titleInput = prompt('Digite o título do lembrete:', '');
+        if (titleInput === null) return; // Cancelled
+        const descInput = prompt('Digite a descrição do lembrete:', '');
+        if (descInput === null) return; // Cancelled
+        if (!titleInput.trim()) {
+          alert('Título obrigatório para o lembrete.');
+          return;
+        }
+
+        const reminders = loadReminders();
+        const newId = reminders.length > 0 ? reminders[reminders.length - 1].id + 1 : 1;
+
+        reminders.push({
+          id: newId,
+          title: titleInput.trim(),
+          description: descInput.trim() || ''
+        });
+        saveReminders(reminders);
+        renderReminders(reminders);
+      }
+
+      // Logout function (placeholder)
+      window.logout = function () {
+        alert("Logout triggered!");
+      }
+
+      // Event listeners for buttons (metrics as buttons)
+
+      document.getElementById('btn-diary').addEventListener('click', () => alert('Navegar para o Diário'));
+      document.getElementById('btn-setting-mood').addEventListener('click', () => alert('Navegar para Configuração de Humor'));
+      document.getElementById('addReminderBtn').addEventListener('click', addReminder);
+
+      // Initialize on load
+      function init() {
+        updateDate();
+        updateGreeting();
+        renderReminders(loadReminders());
+      }
+
+      window.addEventListener('load', init);
+
+      //Aurora
+      function openAuroraChat() {
+        alert("Abrir conversa com Aurora!");
+        // Aqui você pode redirecionar ou abrir modal
+      }
+
+
+      //Lembretes excluir e check
+      function renderReminders(reminders) {
+        const container = document.getElementById('remindersContainer');
+        container.innerHTML = '';
+        reminders.forEach((reminder) => {
+          const reminderDiv = document.createElement('div');
+          reminderDiv.className = 'reminder-card';
+          reminderDiv.setAttribute('tabindex', '-1');
+          reminderDiv.setAttribute('role', 'listitem');
+
+          // Adiciona classe "completed" se o lembrete já foi marcado
+          if (reminder.completed) reminderDiv.classList.add('completed');
+
+          reminderDiv.innerHTML = `
+          <div class="reminder-icon" aria-hidden="true">${reminderIconSVG}</div>
+            <div class="reminder-text">
+              <div class="reminder-title">${escapeHTML(reminder.title)}</div>
+              <div>${escapeHTML(reminder.description)}</div>
+          </div>
+            <div class="reminder-actions" style="margin-left:auto; display:flex; gap:8px;">
+              <!-- Concluir -->
+              <button class="complete-btn" aria-label="Concluir lembrete" title="Concluir">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#758352" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
+              </button>
+              <!-- Excluir -->
+              <button class="delete-btn" aria-label="Excluir lembrete" title="Excluir">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#c7b19a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+        `;
+          container.appendChild(reminderDiv);
+
+          // Eventos dos botões
+          reminderDiv.querySelector('.complete-btn').addEventListener('click', () => {
+            const isDone = reminderDiv.classList.toggle('completed'); // adiciona/remove classe
+            if (isDone) {
+              reminderDiv.style.opacity = '0.5';
+              reminderDiv.style.textDecoration = 'line-through';
+            } else {
+              reminderDiv.style.opacity = '1';
+              reminderDiv.style.textDecoration = 'none';
+            }
+          });
+
+          // Excluir lembrete
+          reminderDiv.querySelector('.delete-btn').addEventListener('click', () => {
+            const reminders = loadReminders().filter(r => r.id !== reminder.id);
+            saveReminders(reminders);
+            renderReminders(reminders);
+          });
+        });
+      }
+
+      //Configuração teste
+      document.getElementById('settingsBtn').addEventListener('click', () => {
+        alert('Abrir configurações...');
+      });
+
+
+    })();
+  </script>
+
+  <script>
+    const modal = document.getElementById("triagemModal");
+    const confirmModal = document.getElementById("confirmModal");
+    const openBtn = document.getElementById("openModalBtn");
+    const closeBtn = document.getElementById("closeModal");
+    const closeConfirmBtn = document.getElementById("closeConfirm");
+
+    // Abrir modal
+    openBtn.onclick = function () {
+      modal.style.display = "flex";
+    };
+
+    // Fechar modal no botão X
+    closeBtn.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // Fechar confirmação
+    closeConfirmBtn.onclick = () => confirmModal.style.display = "none";
+
+    // Fechar modal clicando fora
+    window.onclick = function (event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+        if (event.target === confirmModal) confirmModal.style.display = "none";
+      }
+    };
+
+    // Capturar envio do formulário
+    document.getElementById("triagemForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      triagemModal.style.display = "none";
+      confirmModal.style.display = "flex";
+      const formData = new FormData(this);
+      const dados = {};
+      formData.forEach((value, key) => (dados[key] = value));
+      console.log("Respostas:", dados);
+
+    });
+  </script>
+</body>
+
+</html>

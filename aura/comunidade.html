@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comunidade - Aura</title>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom green tones matching the screenshot */
+    :root {
+      --green-bg: #758352; /* Sidebar background */
+      --green-border: #7d9466; /* Sidebar border */
+      --bg-main: #f6f2ed; /* Main background */
+      --text-dark: #4a2f19; /* Dark brown text */
+      --text-light: #5d4a3d; /* Medium brown text */
+      --box-bg: #ffffff; /* White squares background */
+      --box-light-bg: #f0f0ef;
+      --btn-bg: #d9c8b9; /* Add button background */
+      --btn-hover-bg: #c7b19a;
+      --input-bg: #fff;
+      --icon-color: #4a2f19;
+    }
+
+    /* Custom scroll for horizontal category list */
+    .category-scroll::-webkit-scrollbar {
+      height: 8px;
+    }
+    .category-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .category-scroll::-webkit-scrollbar-thumb {
+      background-color: #C2C2C2;
+      border-radius: 100px;
+    }
+    /* Sidebar styles */
+    aside.sidebar {
+      position: fixed; /* Fixa a sidebar */
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 72px;
+      background-color: var(--green-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+      padding-top: 32px;
+      box-sizing: border-box;
+      z-index: 50;
+    }
+
+    aside.sidebar .logo {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 48px;
+      cursor: default;
+      color: white;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+
+    /* Sidebar icons container for grouping */
+    aside.sidebar nav {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      align-items: center;
+    }
+    aside.sidebar nav button, aside.sidebar nav a {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: white;
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+    }
+    aside.sidebar nav button:hover, aside.sidebar nav a:hover {
+      opacity: 1;
+    }
+
+    /* Bottom logout icon */
+    aside.sidebar .logout-btn {
+      margin-bottom: 32px;
+      filter: invert(98%) sepia(12%) saturate(58%) hue-rotate(52deg) brightness(88%) contrast(85%);
+      cursor: pointer;
+      opacity: 0.85;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 32px;
+      height: 32px;
+    }
+    aside.sidebar .logout-btn:hover {
+      opacity: 1;
+    }
+
+    /*Configuração*/
+    .settings-btn {
+      position: absolute;
+      top: 32px;
+      right: 48px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-dark);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .settings-btn:hover {
+      opacity: 1;
+    }
+
+
+    #slider article {
+    flex: 0 0 calc((100% - 3 * 24px) / 4); /* 4 cards, 3 gaps de 24px */
+  }
+
+  #posts-container {
+  overflow: hidden;
+  padding-left: 4px; /* antes tinha margin grande? */
+}
+
+#posts-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#prev, #next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #E6DCD2;
+  padding: 0.5rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+#prev {
+  left: -30px; /* afasta do container */
+}
+
+#next {
+  right: -40px; /* afasta do container */
+}
+
+  </style>
+</head>
+<body class="bg-[#F9F7F3] font-sans text-[#4B3A2B] h-screen flex">
+  <!-- Sidebar -->
+  <div class="app-container" role="main">
+    <aside class="sidebar" aria-label="Menu de navegação principal">
+      <!-- Leaf logo top -->
+      <img class="logo" style="width: 50px;" height="50px" src="img/Logo.png">
+
+      <nav>
+        <!-- Home Icon -->
+         <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+
+        <!-- User add icon -->
+        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+
+        <!-- Metrics/Bar chart icon -->
+        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+            style="width: 35px; height: 25px; margin-top:50%"></a>
+
+        <!-- Group/users icon -->
+        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+            style="width: 38px; margin-top: 160%;"></a>
+      </nav>
+
+      <!-- Logout icon bottom -->
+      <button class="logout-btn" aria-label="Sair" title="Sair" type="button" tabindex="0" onclick="logout()" >
+        <img src="img/icons-menu/sair.png" alt="">
+      </button>
+  </aside>
+  
+     <!-- Botão de Configurações no canto superior direito -->
+      <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+
+  <!-- Main Content -->
+  <main class="ml-20 flex-1 max-w-[1420px] mx-auto p-8">
+    <header class="flex justify-between items-center mb-10">
+      <h1 class="text-3xl font-bold">Comunidade</h1>
+    </header>
+
+    <!-- Categories -->
+    <nav aria-label="Categorias da comunidade" class="mb-12">
+      <ul class="category-scroll flex space-x-4 overflow-x-auto no-scrollbar">
+        <li>
+          <button class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]" data-category="Saúde Mental Juvenil" type="button">
+            Saúde Mental Juvenil
+          </button>
+        </li>
+        <li>
+          <button class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]" data-category="Dicas de Relaxamento" type="button">
+            Dicas de Relaxamento
+          </button>
+        </li>
+        <li>
+          <button class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]" data-category="Tratamento de Ansiedade" type="button">
+            Ansiedade no dia a dia
+          </button>
+        </li>
+        <li>
+          <button class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]" data-category="Saúde Mental Juvenil" type="button">
+            Pressão no Ambiente Corporativo
+          </button>
+        </li>
+        <li>
+          <button class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]" data-category="Dicas de Relaxamento" type="button">
+            Conceitos e Preconceitos
+          </button>
+        </li>
+        <li>
+          <button class="bg-[#D9D9D9] text-[#4B3A2B] rounded-xl px-4 py-3 min-w-[140px] text-left font-medium cursor-pointer hover:bg-[#d4c3b6]" data-category="Tratamento de Ansiedade" type="button">
+            Tratamento de Ansiedade
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+        <section id="posts-wrapper" class="relative w-full flex items-center justify-center">
+  <!-- Seta esquerda -->
+  <button id="prev" 
+    class="absolute left-0 top-1/2 -translate-y-1/2 bg-[#E6DCD2] p-4 rounded-full shadow-md hover:bg-[#d4c3b6] z-20 hidden">
+    &#10094;
+  </button>
+
+  <!-- Container visível para 4 cards -->
+  <div id="posts-container" class="overflow-hidden"> <!-- 4 * 344px -->
+    <div id="slider" class="flex gap-6 transition-transform duration-500 ease-in-out">
+      
+      <!-- CARD 1 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Ansiedade tem Solução</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Crises frequentes, preocupações constantes e insônia podem ser sinais de um transtorno de ansiedade. 
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 2 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Ansiedade tem Solução</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Existem tratamentos eficazes que podem devolver sua qualidade de vida.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 3 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Ansiedade tem Solução</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          A boa notícia? Sempre há soluções que ajudam.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 4 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Outro Post</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Texto de exemplo para verificar layout.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 5 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Outro Post</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Texto de exemplo para verificar layout.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 6 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Outro Post</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Texto de exemplo para verificar layout.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 7 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Outro Post</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Texto de exemplo para verificar layout.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 8 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Outro Post</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Texto de exemplo para verificar layout.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+      <!-- CARD 9 -->
+      <article class="bg-white rounded-3xl p-6 flex-shrink-0 flex flex-col items-center w-80 shadow-sm">
+        <div class="w-full h-48 bg-[#D9D9D9] rounded-2xl mb-4">
+          <img src="img/posts/anxiety-solution.jpg" class="w-full h-full object-cover rounded-2xl">
+        </div>
+        <h2 class="font-semibold text-lg mb-2">Outro Post</h2>
+        <p class="text-sm mb-6 leading-relaxed text-justify">
+          Texto de exemplo para verificar layout.
+        </p>
+        <a href="comunidade_post.html" class="bg-[#E6DCD2] py-1 px-6 rounded-full text-sm hover:bg-[#d4c3b6] inline-block">
+          Leia mais +
+        </a>
+      </article>
+
+    </div>
+  </div>
+
+  <!-- Seta direita -->
+  <button id="next" 
+    class="absolute right-0 top-1/2 -translate-y-1/2 bg-[#E6DCD2] p-3 rounded-full shadow-md hover:bg-[#d4c3b6] z-20 hidden">
+    &#10095;
+  </button>
+</section>
+  </main>
+  
+  <script>
+    const slider = document.getElementById("slider");
+    const prev = document.getElementById("prev");
+    const next = document.getElementById("next");
+
+    let currentIndex = 0;
+    const itemsToShow = 4; 
+    const itemWidth = 320 + 24; // largura card + gap
+    const totalItems = slider.children.length;
+
+    function updateSlider() {
+      slider.style.transform = `translateX(${-currentIndex * itemWidth}px)`;
+
+      // controlar visibilidade das setas
+      prev.classList.toggle("hidden", currentIndex === 0);
+      next.classList.toggle("hidden", currentIndex >= totalItems - itemsToShow);
+    }
+
+// eventos
+next.addEventListener("click", () => {
+  if (currentIndex < totalItems - itemsToShow) {
+    currentIndex += itemsToShow;
+    if (currentIndex > totalItems - itemsToShow) currentIndex = totalItems - itemsToShow;
+    updateSlider();
+  }
+});
+
+prev.addEventListener("click", () => {
+  if (currentIndex > 0) {
+    currentIndex -= itemsToShow;
+    if (currentIndex < 0) currentIndex = 0;
+    updateSlider();
+  }
+});
+
+// inicializa
+updateSlider();
+
+  
+    // Handle category clicks and read more clicks for demo navigation simulation
+    document.querySelectorAll('nav button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const category = btn.getAttribute('data-category');
+        alert('Abrir página com posts relacionados ao tema: ' + category);
+        // Here you would implement navigation or content loading filtered by category theme
+      });
+    });
+    
+    document.querySelectorAll('.read-more-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        alert('Abrir página do post completo.');
+        // Here you would navigate or load the full post content page
+      });
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Aura</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body class="min-h-screen flex items-center justify-center">
+  <main class="max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-lg grid md:grid-cols-2">
+    <!-- Image and hero left panel for desktop -->
+    <section id="img-section" class="hidden md:flex items-center justify-center p-12">
+      <div class="relative w-full max-w-md rounded-xl overflow-hidden" aria-hidden="true">
+        <img 
+          src="img/cad e log/Image_login.png" 
+          alt="Serene illustration in soft green hues showing a person sitting cross-legged meditating surrounded by large stylized flowers and soft glowing leaves, creating a calm and peaceful atmosphere" 
+          class="w-full h-auto rounded-xl object-cover" 
+          onerror="this.style.display='none'"
+        />
+      </div>
+    </section>
+
+    <!-- Login Form Panel -->
+    <section class="flex flex-col p-10 md:p-20 justify-center gap-6">
+      <header class="flex items-center gap-3 mb-4">
+       <img 
+          src="img/Logo.png" width="30px" height="30px"
+          alt="Logo do AURA - Uma flor de lotus verde"
+          onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cbb07639-b571-4e20-96a1-0612aa286c2d.png';"
+         />
+        <span class="font-semibold text-xl select-none">AURA</span>
+      </header>
+      <h1 class="text-3xl font-extrabold leading-tight select-none">
+        Bem-vindo <span class="hidden md:inline">de volta</span>
+      </h1>
+      <h2 class="text-gray-400 text-sm font-normal max-w-xs select-none md:max-w-full">
+        Coloque seu email e senha para acessar sua conta.
+      </h2>
+
+      <form id="loginForm" class="flex flex-col gap-5 max-w-md w-full" novalidate>
+        <label for="email" class="font-semibold text-sm select-none">Email</label>
+        <input 
+          id="email" 
+          name="email" 
+          type="email" 
+          placeholder="" 
+          required 
+          autocomplete="email"
+          class="input-custom" 
+          aria-describedby="emailHelp"
+        />
+        
+        <label for="senha" class="font-semibold text-sm select-none">Senha</label>
+        <input 
+          id="senha" 
+          name="senha" 
+          type="senha" 
+          placeholder="" 
+          required 
+          autocomplete="current-senha" 
+          class="input-custom" 
+          aria-describedby="senhaHelp"
+        />
+
+        <div class="flex items-center justify-between text-sm">
+          <label for="remember" class="checkbox-label flex items-center gap-2">
+            <input type="checkbox" id="remember" name="remember"/>
+            Lembrar
+          </label>
+          <a href="#" class="forgot-link" tabindex="0">Esqueceu sua Senha?</a>
+        </div>
+
+        <div id="errorMessage" class="text-red-500 text-sm hidden"></div>
+
+        <button type="submit" class="btn-login w-full rounded-lg mt-4" aria-label="Log in to Aura account">
+          Entrar
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const senha = document.getElementById('senha').value;
+      const errorDiv = document.getElementById('errorMessage');
+      
+      // Validação básica
+      if (!email || !senha) {
+        errorDiv.textContent = 'Por favor, preencha todos os campos.';
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+      
+      try {
+        // Simulação de login - substitua pela sua API real
+        const response = await fetch('https://auratccbackend.onrender.com/api/pacientes/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, senha })
+        });
+        
+        if (response.ok) {
+          const userData = await response.json();
+          
+          // Salva dados do usuário no localStorage
+          localStorage.setItem('userData', JSON.stringify(userData));
+          
+          // Redireciona para a home
+          window.location.href = 'home.html';
+        } else {
+          const errorData = await response.json();
+          errorDiv.textContent = errorData.message || 'Erro ao fazer login. Verifique suas credenciais.';
+          errorDiv.classList.remove('hidden');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        errorDiv.textContent = 'Erro de conexão. Tente novamente.';
+        errorDiv.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>

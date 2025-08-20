@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro Paciente - Aura</title>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/cadastro.css" />
+
+</head>
+  
+<body class="min-h-screen flex items-center justify-center">
+  <main class="max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-lg grid md:grid-cols-2 relative">
+    <!-- Image and hero left panel for desktop -->
+    <section id="img-section" class="hidden md:flex items-center justify-center p-12">
+      <div class="relative w-full max-w-md rounded-xl overflow-hidden" aria-hidden="true">
+        <img 
+          src="img/cad e log/Image_cadastro.png" 
+          alt="Illustration showing a seated patient talking to a therapist appearing via video call on a laptop on a table in soft green gradient background" 
+          class="w-full h-auto rounded-xl object-cover" 
+          onerror="this.style.display='none'"
+        />
+        <div class="left-bottom-text">Cadastro para <b>Pacientes</b></div>
+      </div>
+    </section>
+
+    <!-- Registration Form Panel -->
+    <section class="flex flex-col p-6 md:p-12 justify-center gap-4">
+      <header class="flex items-center gap-3 mb-4">
+        <img 
+          src="img/Logo.png" width="30px" height="30px"
+          alt="Logo do AURA - Uma flor de lotus verde"
+          onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cbb07639-b571-4e20-96a1-0612aa286c2d.png';"
+        />
+        <span class="font-semibold text-xl select-none">AURA</span>
+      </header>
+      <h1 class="text-3xl font-extrabold leading-tight select-none">Crie uma conta</h1>
+      <h2 class="text-gray-400 text-sm font-normal max-w-xs select-none md:max-w-full">
+        Preencha os dados abaixo para criar sua conta.
+      </h2>
+
+      <form id="form-cadastro" class="flex flex-col gap-5 max-w-md w-full" action="#" method="POST" novalidate>
+        <label for="name" class="font-semibold text-sm select-none">Nome Completo</label>
+        <input id="name" name="name" type="text" required autocomplete="name" class="input-custom" />
+
+        <label for="cpf" class="font-semibold text-sm select-none">CPF</label>
+        <input id="cpf" name="cpf" type="text" required autocomplete="off" class="input-custom" />
+
+        <label for="email" class="font-semibold text-sm select-none">Email</label>
+        <input id="email" name="email" type="email" required autocomplete="email" class="input-custom" />
+
+        <div class="flex flex-col md:flex-row gap-5">
+          <div class="flex-grow">
+            <label for="password" class="font-semibold text-sm select-none">Senha</label>
+            <input id="password" name="password" type="password" required autocomplete="new-password" class="input-custom" />
+          </div>
+          <div class="flex-grow">
+            <label for="password-confirm" class="font-semibold text-sm select-none">Confirmação de Senha</label>
+            <input id="password-confirm" name="password-confirm" type="password" required autocomplete="new-password" class="input-custom" />
+          </div>
+        </div>
+
+        <a id="btn-cadastrar" class="btn-submit w-full rounded-lg mt-4" aria-label="Botão para cadastrar"">Cadastre-se</a>
+      </form>
+      <p class="text-sm text-gray-400 text-center mt-4">Já tem uma conta? <a href="login.html" class="forgot-link">Login</a></p>
+    </section>
+
+    <!-- Back Button -->
+    <button class="back-button" aria-label="Voltar para Profissional">
+      <span class="back-arrow" aria-hidden="true"></span> Profissional
+    </button>
+
+  </main>
+  <script src="cadastro.js"></script>
+</body>
+</html>

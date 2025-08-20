@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atividades - Aura</title>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar for activity list */
+    #activity-list::-webkit-scrollbar { height: 6px; width: 6px; }
+    #activity-list::-webkit-scrollbar-track { background: transparent; }
+    #activity-list::-webkit-scrollbar-thumb { background-color: #a3b18a; border-radius: 3px; }
+
+    /* Progress circle styles */
+    .progress-bg { stroke: #e6e3de; }
+    .progress-bar { stroke-linecap: round; stroke: #9cbf7a; transition: stroke-dashoffset 0.5s ease; }
+
+    /* Rotaciona apenas os círculos, mantendo o texto correto */
+  .progress-svg circle.progress-bg,
+  .progress-svg circle.progress-bar {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+    /* Sidebar styles */
+    .sidebar {
+      background-color: #73804F;
+      width: 100px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      margin: 10px 0;
+      background-color: transparent;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .sidebar img {
+      width: 68px;
+      height: 28px;
+    }
+
+    .sidebar .icons {
+      margin-top: 130%;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    /*Configuração*/
+    .settings-btn {
+      position: absolute;
+      top: 32px;
+      right: 48px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-dark);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .settings-btn:hover {
+      opacity: 1;
+    }
+
+    /* Buttons custom focus */
+    button:focus-visible { outline: 2px solid #9cbf7a; outline-offset: 2px; }
+
+    /* Tab buttons */
+    .tab-btn { background:#bbbbbb; color:#7e6c4d; }
+    .tab-active { background:#c9c5be; box-shadow: inset 0 0 0 2px #b0b0b0; }
+  </style>
+</head>
+<body class="bg-[#f7f5f0] h-screen flex font-sans text-[#4b3a22] select-none">
+  <!-- Sidebar -->
+    <nav class="sidebar">
+      <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+      <div class="icons">
+        <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+            style="width: 35px; height: 25px; margin-top:50%"></a>
+        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+            style="width: 38px; margin-top: 160%;"></a>
+      </div>
+      <div class="spacer"></div>
+      <a href="#"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+    </nav>
+
+  <!-- Main -->
+  <main class="flex-1 p-8 max-w-5xl mx-auto flex flex-col gap-6 select-text relative">
+    <header class="flex justify-between items-center text-[#4b3a22cc] text-sm font-medium" aria-label="Current date and settings">
+      <div id="current-date">Qui, 04 Abr. 2025</div>
+      <!-- Botão de Configurações no canto superior direito -->
+      <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+          </path>
+        </svg>
+      </button>
+    </header>
+
+    <h1 class="font-extrabold text-4xl mb-1">Atividades</h1>
+
+    <div class="flex items-center gap-2 text-[#4b3a22cc] font-semibold text-sm mb-6 select-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"></path>
+        <circle cx="12" cy="12" r="10" stroke-linecap="round" stroke-linejoin="round"></circle>
+      </svg>
+      <span>Tempo semanal:</span>
+      <span id="weekly-timer" class="font-bold tabular-nums tracking-widest">00:00</span>
+    </div>
+
+    <!-- Tabs -->
+    <nav class="flex gap-6 mb-6 select-none" role="tablist" aria-label="Filter activities">
+      <button id="in-time-tab" role="tab" aria-selected="true" tabindex="0" class="tab-btn tab-active px-6 py-1 rounded-full font-semibold">Em prazo</button>
+      <button id="overdue-tab" role="tab" aria-selected="false" tabindex="-1" class="tab-btn px-6 py-1 rounded-full font-semibold">Vencida</button>
+      <button id="delivered-tab" role="tab" aria-selected="false" tabindex="-1" class="tab-btn px-6 py-1 rounded-full font-semibold">Entregue</button>
+    </nav>
+
+    <!-- List -->
+    <section id="activity-list" role="tabpanel" aria-labelledby="in-time-tab" tabindex="0" class="flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-270px)]">
+      <!-- Activities will be inserted here dynamically -->
+    </section>
+  </main>
+
+  <script>
+    // ===== Date display (e.g., "Qui, 04 Abr. 2025")
+    const dateEl = document.getElementById('current-date');
+    const now = new Date();
+    const weekdayPt = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const monthShortPt = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    dateEl.textContent = `${weekdayPt[now.getDay()]}, ${String(now.getDate()).padStart(2,'0')} ${monthShortPt[now.getMonth()]}. ${now.getFullYear()}`;
+
+    // ===== Weekly timer (accumulates while any activity is running)
+    const weeklyTimerEl = document.getElementById('weekly-timer');
+    let totalSeconds = 0;
+    let timerInterval = null;
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const s = (seconds % 60).toString().padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function startTicker() {
+      if (timerInterval) return; // already ticking
+      timerInterval = setInterval(() => {
+        totalSeconds++;
+        weeklyTimerEl.textContent = formatTime(totalSeconds);
+      }, 1000);
+    }
+    function stopTicker() {
+      if (!timerInterval) return;
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+
+    // ===== Demo data
+    const activitiesData = {
+      'in-time': [
+        { id: 1, title: 'Atividade 1', description: 'Descrição', deadline: '30/08', progress: 75 },
+        { id: 2, title: 'Atividade 2', description: 'Descrição', deadline: '01/09', progress: 75 },
+        { id: 3, title: 'Atividade 3', description: 'Descrição', deadline: '20/09', progress: 1 },
+        { id: 6, title: 'Atividade 6', description: 'Descrição', deadline: '25/09', progress: 40 },
+        { id: 7, title: 'Atividade 7', description: 'Descrição', deadline: '28/09', progress: 10 },
+      ],
+      'overdue': [
+        { id: 4, title: 'Atividade 4', description: 'Descrição atrasada', deadline: '01/04', progress: 20 },
+        { id: 8, title: 'Atividade 8', description: 'Descrição atrasada', deadline: '18/03', progress: 60 },
+        { id: 9, title: 'Atividade 9', description: 'Descrição atrasada', deadline: '12/03', progress: 30 },
+      ],
+      'delivered': [
+        { id: 5, title: 'Atividade 5', description: 'Descrição entregue', deadline: '25/03', progress: 100 },
+        { id:10, title: 'Atividade 10', description: 'Descrição entregue', deadline: '05/08', progress: 100 },
+      ],
+    };
+
+    // ===== State
+    let currentStatus = 'in-time';
+    let runningActivityId = null;
+
+    // ===== Elements
+    const activityList = document.getElementById('activity-list');
+    const tabs = {
+      'in-time': document.getElementById('in-time-tab'),
+      'overdue': document.getElementById('overdue-tab'),
+      'delivered': document.getElementById('delivered-tab'),
+    };
+
+    // ===== Progress circle
+    function createProgressCircle(percent) {
+  const size = 60;
+  const strokeWidth = 8;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (percent / 100) * circumference;
+
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("width", size);
+  svg.setAttribute("height", size);
+  svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+  svg.classList.add("progress-svg"); 
+  // NÃO rotacionar o SVG inteiro
+
+  // Círculo de fundo
+  const bg = document.createElementNS(ns, "circle");
+  bg.setAttribute("class", "progress-bg");
+  bg.setAttribute("cx", size / 2);
+  bg.setAttribute("cy", size / 2);
+  bg.setAttribute("r", radius);
+  bg.setAttribute("stroke-width", strokeWidth);
+  bg.setAttribute("fill", "none");
+
+  // Barra de progresso
+  const bar = document.createElementNS(ns, "circle");
+  bar.setAttribute("class", "progress-bar");
+  bar.setAttribute("cx", size / 2);
+  bar.setAttribute("cy", size / 2);
+  bar.setAttribute("r", radius);
+  bar.setAttribute("stroke-width", strokeWidth);
+  bar.setAttribute("fill", "none");
+  bar.setAttribute("stroke-dasharray", circumference);
+  bar.setAttribute("stroke-dashoffset", offset);
+  // Rotaciona apenas a barra para começar do topo
+  bar.setAttribute("transform", `rotate(-90 ${size/2} ${size/2})`);
+
+  // Texto central
+  const text = document.createElementNS(ns, "text");
+  text.setAttribute("x", "50%");
+  text.setAttribute("y", "50%");
+  text.setAttribute("dominant-baseline", "middle");
+  text.setAttribute("text-anchor", "middle");
+  text.setAttribute("fill", "#4b3a22");
+  text.setAttribute("font-weight", "700");
+  text.setAttribute("font-size", "14");
+  text.textContent = `${percent}%`;
+
+  svg.appendChild(bg);
+  svg.appendChild(bar);
+  svg.appendChild(text);
+  return svg;
+}
+
+
+    // ===== Render list
+    function renderActivities() {
+      activityList.innerHTML = '';
+      const items = activitiesData[currentStatus] || [];
+
+      if (items.length === 0) {
+        const emptyMsg = document.createElement('p');
+        emptyMsg.className = 'text-center text-[#7e6c4d] font-medium mt-10';
+        emptyMsg.textContent = 'Nenhuma atividade para esta categoria.';
+        activityList.appendChild(emptyMsg);
+        return;
+      }
+
+      items.forEach(act => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'bg-white rounded-xl px-6 py-4 flex items-center justify-between shadow-sm hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#9cbf7a] active:scale-[.98] transition text-left';
+        card.dataset.activityId = act.id;
+        card.setAttribute('aria-pressed', runningActivityId === act.id ? 'true' : 'false');
+
+        const info = document.createElement('div');
+        info.className = 'flex flex-col space-y-0.5';
+        info.innerHTML = `
+          <h2 class="font-extrabold text-[#4b3a22] text-lg">${act.title}</h2>
+          <p class="text-[#4b3a22cc] text-sm font-semibold select-text">${act.description}</p>
+          <p class="text-[#4b3a22] text-xs font-semibold select-text">Prazo: ${act.deadline}</p>
+        `;
+
+        const progress = document.createElement('div');
+        progress.className = 'shrink-0';
+        progress.appendChild(createProgressCircle(act.progress));
+
+        card.appendChild(info);
+        card.appendChild(progress);
+
+        // Click handler: toggle this activity
+        card.addEventListener('click', () => {
+          if (runningActivityId === act.id) {
+            runningActivityId = null;
+            stopTicker();      // pause
+          } else {
+            runningActivityId = act.id;
+            startTicker();     // start / continue
+          }
+          renderActivities();   // refresh pressed state
+        });
+
+        activityList.appendChild(card);
+      });
+    }
+
+    // ===== Tabs
+    function setActiveTabStyles() {
+      Object.entries(tabs).forEach(([key, btn]) => {
+        btn.classList.remove('tab-active');
+        if (key === currentStatus) btn.classList.add('tab-active');
+      });
+    }
+
+    function switchTab(event) {
+      const selected = event.currentTarget.id.replace('-tab', '');
+      if (selected === currentStatus) return;
+
+      // Update aria attrs
+      Object.keys(tabs).forEach(key => {
+        const isSelected = key === selected;
+        tabs[key].setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        tabs[key].setAttribute('tabindex', isSelected ? '0' : '-1');
+      });
+
+      currentStatus = selected;
+      // NÃO pausamos o cronômetro ao trocar de aba; ele continua rodando se houver atividade em andamento
+      setActiveTabStyles();
+      renderActivities();
+    }
+
+    Object.values(tabs).forEach(btn => {
+      btn.addEventListener('click', switchTab);
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          const keys = Object.keys(tabs);
+          let idx = keys.indexOf(currentStatus);
+          idx = e.key === 'ArrowRight' ? (idx + 1) % keys.length : (idx - 1 + keys.length) % keys.length;
+          tabs[keys[idx]].focus();
+          tabs[keys[idx]].click();
+        }
+      });
+    });
+
+    // ===== Initial render
+    setActiveTabStyles();
+    renderActivities();
+  </script>
+</body>
+</html>

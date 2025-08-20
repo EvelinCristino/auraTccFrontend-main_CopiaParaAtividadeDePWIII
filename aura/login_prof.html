@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login Aura</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <link rel="stylesheet" href="css/login.css" />
+
+</head>
+<body class="min-h-screen flex items-center justify-center">
+  <main class="max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-lg grid md:grid-cols-2">
+    <!-- Image and hero left panel for desktop -->
+    <section id="img-section" class="hidden md:flex items-center justify-center p-12">
+      <div class="relative w-full max-w-md rounded-xl overflow-hidden" aria-hidden="true">
+        <img 
+          src="img/cad e log/Image_login.png" 
+          alt="Serene illustration in soft green hues showing a person sitting cross-legged meditating surrounded by large stylized flowers and soft glowing leaves, creating a calm and peaceful atmosphere" 
+          class="w-full h-auto rounded-xl object-cover" 
+          onerror="this.style.display='none'"
+        />
+      </div>
+    </section>
+
+    <!-- Login Form Panel -->
+    <section class="flex flex-col p-10 md:p-20 justify-center gap-6">
+      <header class="flex items-center gap-3 mb-4">
+       <img 
+          src="img/Logo.png" width="30px" height="30px"
+          alt="Logo do AURA - Uma flor de lotus verde"
+          onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cbb07639-b571-4e20-96a1-0612aa286c2d.png';"
+         />
+        <span class="font-semibold text-xl select-none">AURA</span>
+      </header>
+      <h1 class="text-3xl font-extrabold leading-tight select-none">
+        Bem-vindo <span class="hidden md:inline">de volta</span>
+      </h1>
+      <h2 class="text-gray-400 text-sm font-normal max-w-xs select-none md:max-w-full">
+        Coloque seu email e senha para acessar sua conta.
+      </h2>
+
+      <form class="flex flex-col gap-5 max-w-md w-full" novalidate>
+        <label for="email" class="font-semibold text-sm select-none">Email</label>
+        <input 
+          id="email" 
+          name="email" 
+          type="email" 
+          placeholder="" 
+          required 
+          autocomplete="email"
+          class="input-custom" 
+          aria-describedby="emailHelp"
+        />
+        
+        <label for="password" class="font-semibold text-sm select-none">Senha</label>
+        <input 
+          id="password" 
+          name="password" 
+          type="password" 
+          placeholder="" 
+          required 
+          autocomplete="current-password" 
+          class="input-custom" 
+          aria-describedby="passwordHelp"
+        />
+
+        <div class="flex items-center justify-between text-sm">
+          <label for="remember" class="checkbox-label flex items-center gap-2">
+            <input type="checkbox" id="remember" name="remember"/>
+            Lembrar
+          </label>
+          <a href="#" class="forgot-link" tabindex="0">Esqueceu sua Senha?</a>
+        </div>
+
+        <a href="/dashboard/dashboard-home.html" type="submit" class="btn-login w-full rounded-lg mt-4" aria-label="Log in to Aura account">
+          Login
+        </a>
+      </form>
+    </section>
+  </main>
+
+  <!-- Mobile version adjustments with minimal changes in layout -->
+  <script>
+    function adjustMobileHeader() {
+      const heading = document.querySelector('h1');
+      if(window.innerWidth < 768){
+        heading.innerHTML = 'Bem-vindo<br>de volta';
+      } else {
+        heading.innerHTML = 'Bem-vindo <span class="hidden md:inline">de volta</span>';
+      }
+    }
+    window.addEventListener('resize', adjustMobileHeader);
+    window.addEventListener('DOMContentLoaded', adjustMobileHeader);
+  </script>
+</body>
+</html>
+

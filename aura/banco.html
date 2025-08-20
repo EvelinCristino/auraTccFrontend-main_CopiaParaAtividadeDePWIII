@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="img/Logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <title>Aura - Banco de psicólogos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Urbanist', sans-serif;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        body {
+            background-color: #F7F4F2;
+            display: flex;
+        }
+
+        .corpo {
+            margin-left: 3%;
+        }
+
+        .sidebar {
+            background-color: #73804F;
+            width: 100px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            margin: 10px 0;
+            background-color: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .sidebar img {
+            width: 68px;
+            height: 28px;
+        }
+
+        .sidebar .icons {
+            margin-top: 130%;
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        .topo {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            padding-left: 0%;
+        }
+
+        .data {
+            font-size: 21px;
+            font-weight: 550;
+            margin-bottom: 5%;
+            color: #4F3422;
+            padding: 10px 0px;
+        }
+
+        .settings-btn {
+            position: absolute;
+            top: 32px;
+            right: 48px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-btn:hover {
+            opacity: 1;
+            transform: rotate(30deg);
+        }
+
+        .titulo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #4F3422;
+        }
+
+        .titulo h1 {
+            font-size: 40px;
+        }
+
+        .seta {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        @media screen and (min-width: 768px) {
+            .seta {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .data {
+                display: none;
+            }
+        }
+
+        .cards-container {
+            display: flex;
+            gap: 100px;
+            margin-top: 20px;
+        }
+
+        .box-button {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .box-button:hover {
+            transform: scale(1.03);
+        }
+
+        .box {
+            position: relative;
+            width: 460px;
+            height: 126px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .box:hover {
+            transform: scale(1.03);
+        }
+
+        .box .group {
+            width: 500px;
+            height: 126px;
+            top: 0;
+            left: 0;
+            background-color: #ffffff;
+            border-radius: 20px;
+        }
+
+        .box .ICONE-LOCAL {
+            position: absolute;
+            width: 60px;
+            height: 57px;
+            top: 34px;
+            left: 17px;
+        }
+
+        .box .monotone-location-wrapper {
+            height: 57px;
+            background-size: 100% 100%;
+        }
+
+        .box .monotone-location {
+            position: relative;
+            width: 37px;
+            height: 38px;
+            top: 10px;
+            left: 12px;
+        }
+
+        .box .img {
+            position: absolute;
+            width: 50px;
+            height: 46px;
+            top: 0;
+            left: 0;
+        }
+
+        .box .div {
+            position: absolute;
+            width: 177px;
+            height: 61px;
+            top: 24px;
+            left: 91px;
+        }
+
+        .box .text-wrapper {
+            position: absolute;
+            width: 154px;
+            top: 44px;
+            left: 0;
+            font-weight: 600;
+            color: #6d513f;
+            font-size: 19px;
+            white-space: nowrap;
+        }
+
+        .box .hello-shinomiya {
+            position: absolute;
+            width: 173px;
+            top: 0;
+            left: 0;
+            font-weight: 800;
+            color: #4e3321;
+            font-size: 30px;
+            letter-spacing: -0.45px;
+            line-height: 56px;
+            white-space: nowrap;
+        }
+
+        .label {
+            width: 329px;
+            font-weight: 800;
+            color: #4e3321;
+            font-size: 30px;
+            letter-spacing: -0.45px;
+            line-height: 56px;
+            white-space: nowrap;
+        }
+
+        .profissionais-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 50px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .card-profissional {
+            width: 400px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.2s ease;
+        }
+
+        .card-profissional:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-distancia {
+            font-size: 14px;
+            color: #6d513f;
+        }
+
+        .card-nome {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4F3422;
+        }
+
+        .card-descricao {
+            color: #6d513f;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+
+        .card-telefone {
+            font-size: 14px;
+            color: #6d513f;
+        }
+
+        .overlay-filtro {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 9999;
+        }
+
+        .painel-filtro {
+            position: fixed;
+            top: 0;
+            left: -500px;
+            width: 480px;
+            height: 100%;
+            background-color: #F7F4F2;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+            transition: left 0.3s ease;
+            z-index: 10000;
+            padding: 30px 20px;
+            overflow-y: auto;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .painel-filtro.aberto {
+            left: 0;
+        }
+
+        .filtro-conteudo {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .filtro-conteudo h2 {
+            color: #4F3422;
+            margin-bottom: 10px;
+        }
+
+        .filtro-conteudo label {
+            font-weight: bold;
+            color: #4F3422;
+        }
+
+        .filtro-conteudo select,
+        .filtro-conteudo input {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background-color: white;
+            font-size: 14px;
+        }
+
+        .filtro-conteudo .buscar {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #73804F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .filtro-conteudo .buscar:hover {
+            background-color: #5e6b3e;
+        }
+
+        .fechar-filtro {
+            background: none;
+            border: none;
+            font-size: 20px;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        /* Fundo escuro */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* Caixa do modal */
+        .modal {
+            background: #F9F6F1;
+            border-radius: 20px;
+            padding: 30px;
+            width: 600px;
+            max-width: 95%;
+            position: relative;
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Botão fechar */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 32px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        /* Cabeçalho */
+        .modal-header {
+            text-align: center;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: white;
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+        }
+
+        .nome {
+            font-size: 22px;
+            font-weight: bold;
+            color: #4A2E1F;
+            margin-top: 10px;
+        }
+
+        .btn-consulta {
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: #6C8A4A;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .modal p {
+            text-align: center;
+            color: #4A2E1F;
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        /* Blocos de informação */
+        .info-grid {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .info-box {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .info-box p {
+            margin: 4px 0;
+            text-align: left;
+        }
+
+        .info-box strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #4A2E1F;
+        }
+
+        .info-full {
+            grid-column: span 2;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Menu lateral -->
+    <nav class="sidebar">
+        <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+        <div class="icons">
+            <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+                    style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+            <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+                    style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+            <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+                    style="width: 35px; height: 25px; margin-top:50%"></a>
+            <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+                    style="width: 38px; margin-top: 160%;"></a>
+        </div>
+        <div class="spacer"></div>
+        <a href="#"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+    </nav>
+
+    <div class="corpo">
+        <div class="topo">
+            <header>
+                <div class="data">
+                    <p><span id="data-atual"></span></p>
+                </div>
+            </header>
+            <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path
+                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+                    </path>
+                </svg>
+            </button>
+            <div class="titulo">
+                <button class="seta"><img src="" alt=""></button>
+                <h1>Banco de Psicólogos</h1>
+            </div>
+        </div>
+
+        <div class="cards-container">
+            <div class="box" onclick="abrirLocalizacao()">
+                <div class="group">
+                    <div class="ICONE-LOCAL"><img class="img" src="img/banco/ICONE - LOCAL.png"></div>
+                    <div class="div">
+                        <div class="text-wrapper" id="localizacao-texto"></div>
+                        <div class="hello-shinomiya">Localização</div>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-button" onclick="abrirFiltro()">
+                <div class="group">
+                    <div class="ICONE-LOCAL"><img class="img" src="img/banco/filtros.png"></div>
+                    <div class="div">
+                        <div class="text-wrapper">Tipos de Filtro</div>
+                        <div class="hello-shinomiya">Filtros</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="label" style="color:#4F3422; margin-top:40px;">Profissionais Disponíveis</h2>
+        <div id="profissionais-container" class="profissionais-grid"></div>
+
+        <!-- Painel de Filtro -->
+        <div id="overlay-filtro" class="overlay-filtro" onclick="fecharFiltro()"></div>
+        <div id="painel-filtro" class="painel-filtro">
+            <div class="filtro-conteudo">
+                <button class="fechar-filtro" onclick="fecharFiltro()">✖</button>
+                <h2>Filtro</h2>
+                <label>Convênio</label>
+                <select id="filtro-convenio">
+                    <option value="">Todos</option>
+                    <option>Unimed</option>
+                    <option>Amil</option>
+                </select>
+                <label>Valor</label>
+                <select id="filtro-valor">
+                    <option value="">Todos</option>
+                    <option>Gratuito (SUS)</option>
+                    <option>Até R$ 100</option>
+                    <option>R$ 100 - R$ 200</option>
+                    <option>R$ 200 - R$ 300</option>
+                    <option>R$ 300 - R$ 400</option>
+                </select>
+                <label>Tipo de atendimento</label>
+                <select id="filtro-atendimento">
+                    <option value="">Todos</option>
+                    <option>Online</option>
+                    <option>Presencial</option>
+                </select>
+                <label>Faixa Etária</label>
+                <select id="filtro-etaria">
+                    <option value="">Todos</option>
+                    <option>Infantil</option>
+                    <option>Adulto</option>
+                </select>
+                <label>Abordagem terapêutica</label>
+                <select id="filtro-abordagem">
+                    <option value="">Todos</option>
+                    <option>TCC</option>
+                    <option>Psicanálise</option>
+                </select>
+                <label>Raio Máximo (km)</label>
+                <input type="number" id="filtro-raio" value="10" min="1">
+                <button class="buscar" onclick="aplicarFiltro()">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay + Modal -->
+    <div class="overlay" id="overlay">
+        <div class="modal">
+            <span class="close" id="fecharModal">&times;</span>
+
+            <div class="modal-header">
+                <div class="avatar">👤</div>
+                <div class="nome" id="modal-nome"></div>
+                <button class="btn-consulta">Marque já sua consulta comigo!</button>
+            </div>
+
+            <p id="modal-descricao"></p>
+
+            <div class="info-grid">
+                <div class="info-box">
+                    <strong>📍 Localização</strong>
+                    <p id="modal-cidade"></p>
+                    <p id="modal-endereco"></p>
+                </div>
+
+                <div class="info-box">
+                    <strong>📞 Contato</strong>
+                    <p id="modal-linkedin"></p>
+                    <p id="modal-email"></p>
+                    <p id="modal-telefone"></p>
+                </div>
+
+                <div class="info-box info-full">
+                    <strong>ℹ️ Especificações</strong>
+                    <p id="modal-atendimento"></p>
+                    <p id="modal-convenios"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dias = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+        const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+        const hoje = new Date();
+        document.getElementById('data-atual').textContent =
+            `${dias[hoje.getDay()]}, ${String(hoje.getDate()).padStart(2, '0')} ${meses[hoje.getMonth()]}, ${hoje.getFullYear()}`;
+    </script>
+
+    <script>
+        let usuarioLat = null, usuarioLon = null, cidadeUsuario = "Carapicuíba";
+        let profissionaisAtuais = []; // Variável para armazenar os profissionais atualmente exibidos
+
+        function calcularDistancia(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) ** 2 +
+                Math.cos(lat1 * Math.PI / 180) *
+                Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) ** 2;
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        }
+
+        const profissionaisOriginais = [
+            {
+                nome: "Maria Souza",
+                descricao: "Especialista em TCC",
+                telefone: "(11) 98765-4321",
+                email: "maria.souza@gmail.com",
+                linkedin: "linkedin.com/in/maria-souza",
+                cidade: "São Paulo",
+                endereco: "Av. Paulista, 1000",
+                convenio: "Unimed",
+                conveniosAceitos: "Unimed, Amil",
+                valor: 120,
+                atendimento: "Presencial",
+                faixaEtaria: "Adulto",
+                abordagem: "TCC",
+                lat: -23.5505, lon: -46.6333
+            },
+            {
+                nome: "João Silva",
+                descricao: "Atendimento infantil e adolescente",
+                telefone: "(11) 91234-5678",
+                email: "joao.silva@gmail.com",
+                linkedin: "linkedin.com/in/joao-silva",
+                cidade: "Osasco",
+                endereco: "Rua Central, 200",
+                convenio: "Amil",
+                conveniosAceitos: "Amil, SUS",
+                valor: 90,
+                atendimento: "Online",
+                faixaEtaria: "Infantil",
+                abordagem: "Psicanálise",
+                lat: -23.523, lon: -46.8408
+            },
+            {
+                nome: "Beyoncé Knowles",
+                descricao: "Psicanalista experiente",
+                telefone: "(11) 91268-5789",
+                email: "bey.psi@gmail.com",
+                linkedin: "linkedin.com/in/beyonce-knowles",
+                cidade: "São Paulo",
+                endereco: "Rua das Estrelas, 50",
+                convenio: "Unimed",
+                conveniosAceitos: "Unimed, InterMédica",
+                valor: 150,
+                atendimento: "Presencial",
+                faixaEtaria: "Adulto",
+                abordagem: "Psicanálise",
+                lat: -23.5891, lon: -46.6586
+            }
+        ];
+
+        function renderizarProfissionais(lista) {
+            const container = document.getElementById('profissionais-container');
+            container.innerHTML = "";
+            profissionaisAtuais = lista; // Atualiza a lista de profissionais atuais
+            
+            lista.forEach((p, index) => {
+                let distanciaTexto = "";
+                if (usuarioLat && usuarioLon) {
+                    const dist = calcularDistancia(usuarioLat, usuarioLon, p.lat, p.lon);
+                    distanciaTexto = `🚶 ${dist.toFixed(1)} km`;
+                }
+                container.innerHTML += `
+            <div class="card-profissional" data-index="${index}">
+                <div class="card-topo">
+                    <div>
+                        <div class="card-nome">${p.nome}</div>
+                        <div class="card-descricao">${p.descricao}</div>
+                        <div class="card-telefone">📞 ${p.telefone}</div>
+                    </div>
+                    <div class="card-distancia">${distanciaTexto}</div>
+                </div>
+            </div>
+        `;
+            });
+            
+            // Adiciona event listeners para cada card
+            document.querySelectorAll('.card-profissional').forEach(card => {
+                card.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    abrirModal(index);
+                });
+            });
+        }
+
+        function abrirModal(index) {
+            const p = profissionaisAtuais[index];
+
+            document.getElementById("modal-nome").textContent = p.nome;
+            document.getElementById("modal-descricao").textContent = `${p.descricao}. Sou ${p.nome}, atuo desde 2010.`;
+            document.getElementById("modal-cidade").textContent = p.cidade;
+            document.getElementById("modal-endereco").textContent = p.endereco;
+            document.getElementById("modal-linkedin").textContent = "LinkedIn: " + p.linkedin;
+            document.getElementById("modal-email").textContent = "E-mail: " + p.email;
+            document.getElementById("modal-telefone").textContent = "Telefone: " + p.telefone;
+            document.getElementById("modal-atendimento").textContent = "Atendimento: " + p.atendimento;
+            document.getElementById("modal-convenios").textContent = "Convênios aceitos: " + p.conveniosAceitos;
+
+            document.getElementById("overlay").style.display = "flex";
+        }
+
+        function abrirLocalizacao() {
+            const escolha = confirm("Deseja usar sua localização atual?");
+            if (escolha && navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async pos => {
+                    usuarioLat = pos.coords.latitude;
+                    usuarioLon = pos.coords.longitude;
+                    const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${usuarioLat}&lon=${usuarioLon}&format=json`);
+                    const data = await resp.json();
+                    const cidade = data.address.city || data.address.town || data.address.village || "Local não identificado";
+                    cidadeUsuario = cidade;
+                    document.getElementById("localizacao-texto").textContent = cidade;
+                    renderizarProfissionais(profissionaisOriginais);
+                }, digitarCidade);
+            } else digitarCidade();
+        }
+
+        function digitarCidade() {
+            const novaCidade = prompt("Digite sua cidade:");
+            if (novaCidade) {
+                cidadeUsuario = novaCidade;
+                document.getElementById("localizacao-texto").textContent = novaCidade;
+            }
+        }
+
+        function abrirFiltro() {
+            document.getElementById('painel-filtro').classList.add('aberto');
+            document.getElementById('overlay-filtro').style.display = 'block';
+        }
+
+        function fecharFiltro() {
+            document.getElementById('painel-filtro').classList.remove('aberto');
+            document.getElementById('overlay-filtro').style.display = 'none';
+        }
+
+        // Função de filtro
+        function aplicarFiltro() {
+            const convenio = document.getElementById("filtro-convenio").value;
+            const valorSel = document.getElementById("filtro-valor").value;
+            const atendimento = document.getElementById("filtro-atendimento").value;
+            const faixaEtaria = document.getElementById("filtro-etaria").value;
+            const abordagem = document.getElementById("filtro-abordagem").value;
+            const raio = parseFloat(document.getElementById("filtro-raio").value);
+
+            let valorMax = null;
+            if (valorSel === "Gratuito (SUS)") valorMax = 0;
+            if (valorSel === "Até R$ 100") valorMax = 100;
+            if (valorSel === "R$ 100 - R$ 200") valorMax = 200;
+            if (valorSel === "R$ 200 - R$ 300") valorMax = 300;
+            if (valorSel === "R$ 300 - R$ 400") valorMax = 400;
+
+            const filtrados = profissionaisOriginais.filter(p => {
+                if (convenio && p.convenio !== convenio) return false;
+                if (valorMax != null && p.valor > valorMax) return false;
+                if (atendimento && p.atendimento !== atendimento) return false;
+                if (faixaEtaria && p.faixaEtaria !== faixaEtaria) return false;
+                if (abordagem && p.abordagem !== abordagem) return false;
+
+                if (!isNaN(raio) && usuarioLat != null && usuarioLon != null) {
+                    const d = calcularDistancia(usuarioLat, usuarioLon, p.lat, p.lon);
+                    if (d > raio) return false;
+                }
+                return true;
+            });
+
+            renderizarProfissionais(filtrados);
+            fecharFiltro();
+        }
+        window.aplicarFiltro = aplicarFiltro;
+
+        // Evento do botão de buscar
+        document.getElementById("botao-filtrar").addEventListener("click", aplicarFiltro);
+    </script>
+
+    <script>
+        const overlay = document.getElementById("overlay");
+        const btnFechar = document.getElementById("fecharModal");
+
+        function fecharModal() { 
+            overlay.style.display = "none"; 
+        }
+
+        // deixa disponíveis para uso no HTML
+        window.fecharModal = fecharModal;
+
+        // fecha no X
+        btnFechar.addEventListener("click", fecharModal);
+
+        // fecha clicando fora
+        overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) fecharModal();
+        });
+
+        // Inicializa a página com os profissionais
+        document.addEventListener('DOMContentLoaded', function() {
+            renderizarProfissionais(profissionaisOriginais);
+        });
+    </script>
+</body>
+
+</html>

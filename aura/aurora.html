@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aurora - Assistente de Suporte Emocional</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+    <style>
+        /* Animações personalizadas */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            margin: 0 2px;
+            background-color: #4b5563;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0ms; }
+        .typing-dot:nth-child(2) { animation-delay: 500ms; }
+        .typing-dot:nth-child(3) { animation-delay: 1000ms; }
+        
+        /* Altura do container do chat */
+        .chat-container {
+            height: calc(100vh - 150px);
+        }
+        
+        /* Barra de rolagem personalizada */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 3px;
+        }
+        
+        /* Animação de deslizar para dentro do menu */
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .slide-in {
+            animation: slideIn 0.3s forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Layout principal -->
+    <div class="flex flex-col h-screen">
+        <!-- Cabeçalho -->
+        <header class="bg-white shadow-sm z-10">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <!-- Botão menu hamburguer para histórico do chat -->
+                <button
+                  id="menuButton"
+                  class="text-gray-700 hover:text-green-600 focus:outline-none"
+                >
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <div class="flex items-center space-x-2">
+                    <img
+                      src="img/logo-janela.png"
+                      alt="Logo da Aurora - Um gradiente suave do azul ao roxo com um ícone estilizado de nascer do sol"
+                      class="h-8 w-8 rounded-full"
+                      onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/34cc0767-6809-4282-86a6-755ed20e77c3.png'"
+                    />
+                    <h1 class="text-xl font-semibold text-gray-800">Aurora</h1>
+                </div>
+                
+                <!-- Botão perfil do usuário -->
+                <button
+                  id="profileButton"
+                  class="text-gray-700 hover:text-green-600 focus:outline-none"
+                >
+                    <i class="fas fa-user-circle text-xl"></i>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Menu lateral (escondido por padrão) -->
+        <div
+          id="sideMenu"
+          class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform -translate-x-full z-20 p-4 overflow-y-auto"
+        >
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-lg font-semibold text-gray-800">Histórico do Chat</h2>
+                <button id="closeMenu" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="historyList" class="space-y-2">
+                <!-- Conteúdo dinâmico será adicionado aqui -->
+            </div>
+        </div>
+        
+        <!-- Modal de perfil (escondido por padrão) -->
+        <div
+          id="profileModal"
+          class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30 hidden"
+        >
+            <div class="bg-white rounded-lg p-6 max-w-md w-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-semibold">Seu Perfil</h3>
+                    <button id="closeProfile" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="flex flex-col items-center mb-4">
+                    <img
+                      src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/2b8dff7e-0cf2-402f-a5d8-61e5d72dd2dc.png"
+                      alt="Foto de perfil do usuário - avatar em branco com fundo azul claro"
+                      class="h-20 w-20 rounded-full mb-3"
+                      onerror="this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4da6eaa1-ffef-42ea-835e-e131230631f8.png'"
+                    />
+                    <p class="font-medium">Usuário Convidado</p>
+                    <p class="text-sm text-gray-500">Ativo agora</p>
+                </div>
+                <div class="space-y-3">
+                    <button
+                      class="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg text-left"
+                    >
+                        <i class="fas fa-user-edit mr-2"></i> Editar Perfil
+                    </button>
+                    <button
+                      class="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg text-left"
+                    >
+                        <i class="fas fa-moon mr-2"></i> Modo Noturno
+                    </button>
+                    <button
+                      class="w-full py-2 px-4 bg-gray-100 hover:bg-gray-200 rounded-lg text-left"
+                    >
+                        <i class="fas fa-cog mr-2"></i> Configurações
+                    </button>
+
+                    <a href="home.html">
+                    <button
+                      class="w-full py-2 px-4 bg-red-50 hover:bg-red-100 rounded-lg text-left text-red-600"
+                      id="logoutBtn"
+                    >
+                        <i class="fas fa-sign-out-alt mr-2"></i> Sair
+                    </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Área principal do chat -->
+        <main class="flex-1 container mx-auto px-4 py-4 flex flex-col">
+            <!-- Mensagens do chat -->
+            <div
+              id="chatMessages"
+              class="chat-messages flex-1 overflow-y-auto mb-4 space-y-4"
+            >
+                <!-- Mensagem de boas-vindas -->
+                <div class="flex justify-start">
+                    <div
+                      class="max-w-3/4 bg-green-100 rounded-2xl p-4 text-green-900"
+                    >
+                        <div class="flex items-center mb-2">
+                            <img
+                              src="img/avatar.png"
+                              alt="Avatar da Aurora"
+                              class="h-8 w-8 rounded-full mr-2"
+                              onerror="this.src='https://placehold.co/32x32/DDEEFF/CCDDFF?text=A'"
+                            />
+                            <span class="font-semibold">Aurora</span>
+                        </div>
+                        <p>
+                            Olá! Eu sou a Aurora, sua assistente de suporte emocional.
+                            Estou aqui para ouvir você e ajudar a navegar seus sentimentos.
+                        </p>
+                        <p class="mt-2">Como você está se sentindo hoje?</p>
+
+                        <!-- Botões de respostas rápidas -->
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button
+                              class="quick-response-btn px-3 py-1 bg-white rounded-full text-sm border border-green-200 hover:bg-green-50"
+                            >
+                                Estou me sentindo um pouco ansioso(a)
+                            </button>
+                            <button
+                              class="quick-response-btn px-3 py-1 bg-white rounded-full text-sm border border-green-200 hover:bg-green-50"
+                            >
+                                Estou estressado(a) com o trabalho
+                            </button>
+                            <button
+                              class="quick-response-btn px-3 py-1 bg-white rounded-full text-sm border border-green-200 hover:bg-green-50"
+                            >
+                                Estou me sentindo sozinho(a)
+                            </button>
+                            <button
+                              class="quick-response-btn px-3 py-1 bg-white rounded-full text-sm border border-green-200 hover:bg-green-50"
+                            >
+                                Só preciso conversar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Banner de Recursos de Emergência -->
+            <div
+              id="emergencyBanner"
+              class="hidden bg-red-50 border border-red-200 rounded-lg p-4 mb-4"
+            >
+                <div class="flex items-start">
+                    <div class="text-red-500 mr-3 mt-1">
+                        <i class="fas fa-exclamation-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-red-800">Recursos Importantes</h4>
+                        <p class="text-red-700 text-sm mt-1">
+                            Se você está passando por grande angústia ou pensamentos
+                            de automutilação, por favor, entre em contato com o
+                            <a
+                              href="https://www.cvv.org.br/"
+                              class="font-semibold underline"
+                              target="_blank"
+                              >Centro de Valorização da Vida (CVV)</a
+                            >
+                            ou os serviços de emergência locais.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Área de input da mensagem -->
+            <div
+              class="bg-white rounded-lg shadow-sm border border-gray-200 p-3"
+            >
+                <div class="flex items-center">
+                    <textarea
+                      id="messageInput"
+                      class="flex-1 border-0 focus:ring-0 resize-none py-2 px-3 text-gray-700 placeholder-gray-400 focus:outline-none"
+                      rows="1"
+                      placeholder="Digite sua mensagem..."
+                      style="min-height: 40px"
+                    ></textarea>
+                    <button
+                      id="sendButton"
+                      class="ml-3 bg-green-600 hover:bg-green-700 text-white rounded-full p-2 w-10 h-10 flex items-center justify-center"
+                        onclick="sendMessage()"                    
+                      >
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="flex justify-end mt-1">
+                    <button
+                      id="emergencyButton"
+                      class="text-xs text-red-600 hover:text-red-800 flex items-center"
+                    >
+                        <i class="fas fa-exclamation-triangle mr-1"></i> Preciso de ajuda urgente
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+                // === CONFIGURA AQUI ===
+    const API_BASE = 'https://aurora-api-quwn.onrender.com';
+    const MESSAGE_ENDPOINT = API_BASE + '/api/message'; // rota correta para enviar mensagem
+
+
+            // Elementos do DOM
+            const menuButton = document.getElementById('menuButton');
+            const closeMenu = document.getElementById('closeMenu');
+            const sideMenu = document.getElementById('sideMenu');
+            const profileButton = document.getElementById('profileButton');
+            const profileModal = document.getElementById('profileModal');
+            const closeProfile = document.getElementById('closeProfile');
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const chatMessages = document.getElementById('chatMessages');
+            const emergencyButton = document.getElementById('emergencyButton');
+            const emergencyBanner = document.getElementById('emergencyBanner');
+            const quickResponseButtons = document.querySelectorAll('.quick-response-btn');
+            const historyList = document.getElementById('historyList');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Menu
+            menuButton.addEventListener('click', () => {
+                sideMenu.classList.add('slide-in');
+                sideMenu.classList.remove('hidden');
+            });
+            closeMenu.addEventListener('click', () => sideMenu.classList.add('hidden'));
+            profileButton.addEventListener('click', () => profileModal.classList.remove('hidden'));
+            closeProfile.addEventListener('click', () => profileModal.classList.add('hidden'));
+            window.addEventListener('click', (event) => {
+                if (event.target === profileModal) profileModal.classList.add('hidden');
+                if (event.target === sideMenu) sideMenu.classList.add('hidden');
+            });
+            logoutBtn && logoutBtn.addEventListener('click', () => {
+                // exemplo: só fecha modal e limpa histórico local
+                profileModal.classList.add('hidden');
+                historyList.innerHTML = '';
+                addLocalHistory('Usuário saiu da sessão');
+            });
+
+            // Auto-resize textarea
+            messageInput.addEventListener('input', function () {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            });
+
+            // Send message (main)
+            async function sendMessage() {
+                const content = messageInput.value.trim();
+                if (!content) return;
+
+                    const userId = "12345";
+
+                // adiciona mensagem do usuário
+                addMessageToChat('user', content);
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+
+                // mostra indicador de digitação
+                showTypingIndicator();
+                setSendingState(true);
+
+                // tenta enviar para a API
+                try {
+                    const res = await fetch(MESSAGE_ENDPOINT, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            userId: "12345", 
+                            content })
+                    });
+
+                    if (!res.ok) {
+                        // se a API responder com erro, tenta fallback local
+                        console.warn('API respondeu com status', res.status);
+                        const textFallback = (await res.text()) || 'Erro no servidor';
+                        hideTypingIndicator();
+                        addMessageToChat('assistant', `Desculpe, ocorreu um erro no servidor: ${textFallback}`);
+                        addLocalHistory({ user: content, bot: `Erro: ${res.status}` });
+                        return;
+                    }
+
+                    const data = await res.json();
+
+                    // Mapeia possíveis formatos de resposta do backend
+                    const botText = data.reply || data.message || data.text || (data.result && data.result.reply) || JSON.stringify(data);
+                    const isEmergency = data.isEmergency || data.emergency || false;
+
+                    hideTypingIndicator();
+                    addMessageToChat('assistant', botText, isEmergency);
+
+                    // salva no histórico local (simples)
+                    addLocalHistory({ user: message, bot: botText });
+                } catch (err) {
+                    // fallback: gera resposta localmente se a API não estiver disponível
+                    console.error('Erro ao conectar com a API:', err);
+                    hideTypingIndicator();
+                    const local = generateResponse(content);
+                    addMessageToChat('assistant', local.message, local.isEmergency);
+                    addLocalHistory({ user: content, bot: local.message + ' (gerado localmente)' });
+                } finally {
+                    setSendingState(false);
+                }
+            }
+
+            // Bind send
+            sendButton.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Quick responses
+            quickResponseButtons.forEach((button) => {
+                button.addEventListener('click', function () {
+                    const text = this.textContent.trim();
+                    messageInput.value = text;
+                    sendMessage();
+                });
+            });
+
+            // Emergency button
+            emergencyButton.addEventListener('click', function () {
+                emergencyBanner.classList.remove('hidden');
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                setTimeout(() => emergencyBanner.scrollIntoView({ behavior: 'smooth' }), 100);
+            });
+
+            // UI helpers
+            function addMessageToChat(sender, message, isEmergency = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+
+                let messageContent = `
+                    <div class="max-w-3/4 rounded-2xl p-4 ${sender === 'user' ? 'bg-gray-300 text-gray-900' : 'bg-green-100 text-green-900'}">
+                `;
+
+                if (sender === 'assistant') {
+                    messageContent += `
+                        <div class="flex items-center mb-2">
+                            <img src="avatar.png" alt="Aurora" class="h-8 w-8 rounded-full mr-2" onerror="this.src='https://placehold.co/32x32/DDEEFF/CCDDFF?text=A'"/>
+                            <span class="font-semibold">Aurora</span>
+                        </div>
+                    `;
+                }
+
+                messageContent += `<p>${escapeHtml(message)}</p>`;
+
+                if (isEmergency) {
+                    messageContent += `
+                        <div class="mt-3 p-3 bg-red-50 rounded-lg border border-red-200">
+                            <p class="text-sm text-red-800">
+                                <i class="fas fa-exclamation-triangle mr-1"></i> Com base no que você compartilhou, recomendo contatar o <a href="https://www.cvv.org.br/" class="font-semibold underline" target="_blank">CVV</a> para suporte imediato.
+                            </p>
+                        </div>
+                    `;
+                }
+
+                messageContent += '</div>';
+                messageDiv.innerHTML = messageContent;
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // typing indicator
+            function showTypingIndicator() {
+                if (document.getElementById('typingIndicator')) return;
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'flex justify-start mb-4';
+                typingDiv.id = 'typingIndicator';
+                typingDiv.innerHTML = `
+                    <div class="bg-indigo-100 rounded-2xl p-4 text-gray-800 max-w-xs">
+                        <div class="flex items-center">
+                            <img src="avatar.png" alt="Aurora" class="h-8 w-8 rounded-full mr-2" onerror="this.src='https://placehold.co/32x32/DDEEFF/CCDDFF?text=A'">
+                            <div class="typing-indicator">
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                                <div class="typing-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chatMessages.appendChild(typingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            function hideTypingIndicator() {
+                const typingIndicator = document.getElementById('typingIndicator');
+                if (typingIndicator) typingIndicator.remove();
+            }
+
+            // controla botão/enviar durante envio
+            function setSendingState(isSending) {
+                sendButton.disabled = isSending;
+                sendButton.style.opacity = isSending ? '0.6' : '1';
+            }
+
+            // Histórico simples (localStorage)
+            function addLocalHistory(entry) {
+                try {
+                    const key = 'aurora_history';
+                    const cur = JSON.parse(localStorage.getItem(key) || '[]');
+                    cur.push({ ...entry, ts: new Date().toISOString() });
+                    localStorage.setItem(key, JSON.stringify(cur));
+                    renderHistory();
+                } catch (err) { console.warn('Erro ao salvar histórico', err); }
+            }
+            function renderHistory() {
+                const key = 'aurora_history';
+                const cur = JSON.parse(localStorage.getItem(key) || '[]');
+                historyList.innerHTML = '';
+                cur.slice().reverse().forEach(h => {
+                    const el = document.createElement('div');
+                    el.className = 'p-3 rounded-lg hover:bg-gray-100 text-gray-700';
+                    el.innerHTML = `<div class="text-sm text-gray-600">${new Date(h.ts).toLocaleString()}</div>
+                                    <div class="font-medium">${escapeHtml(String(h.user || ''))}</div>
+                                    <div class="text-sm text-gray-600 mt-1">${escapeHtml(String(h.bot || ''))}</div>`;
+                    historyList.appendChild(el);
+                });
+            }
+            renderHistory();
+
+            // pequeno sanitizador para evitar injeção de HTML no chat
+            function escapeHtml(unsafe) {
+                return String(unsafe)
+                  .replace(/&/g, '&amp;')
+                  .replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;')
+                  .replace(/"/g, '&quot;')
+                  .replace(/'/g, '&#039;');
+            }
+
+            // === Fallback local: usa a lógica que você já tinha ===
+            function generateResponse(userMessage) {
+                const lowerMsg = userMessage.toLowerCase();
+                const emergencyPhrases = ['suicídio', 'me matar', 'acabar com minha vida', 'sem esperança', 'sem saída', 'emergência'];
+                const empatheticResponses = [
+                    "Eu te escuto. É preciso coragem para compartilhar o que está sentindo. Pode me contar mais sobre o que está passando pela sua cabeça?",
+                    "Estou aqui para você. O que você está vivendo parece muito difícil. Ajudaria conversar sobre isso?",
+                    "O que você está sentindo é totalmente válido. Vamos explorar algumas formas de você se sentir melhor.",
+                    "Eu entendo que isso é difícil para você. Lembre-se que seus sentimentos importam e que ajuda está disponível."
+                ];
+                const copingStrategies = [
+                    "Exercícios de respiração podem ajudar. Tente inspirar por 4 segundos, segurar por 4, e expirar por 6.",
+                    "Às vezes, dar um passo para trás e fazer uma caminhada rápida pode ajudar a clarear a mente.",
+                    "Escrever seus pensamentos pode ajudar a organizá-los e reduzir sua intensidade."
+                ];
+                const professionalSuggestions = [
+                    "Pode ser útil conversar com um profissional sobre isso. Gostaria de orientações para encontrar ajuda?",
+                    "Existem conselheiros e terapeutas que são especializados nesses tipos de situação."
+                ];
+                const containsEmergency = emergencyPhrases.some(phrase => lowerMsg.includes(phrase));
+                if (containsEmergency) {
+                    return {
+                        message: "Estou profundamente preocupado com o que você está me dizendo. Sua segurança é a coisa mais importante agora. Por favor, fique comigo e saiba que ajuda está disponível.",
+                        isEmergency: true
+                    };
+                }
+                if (lowerMsg.includes('triste') || lowerMsg.includes('deprimido') || lowerMsg.includes('ansioso')) {
+                    return {
+                        message: `${empatheticResponses[Math.floor(Math.random() * empatheticResponses.length)]} ${professionalSuggestions[Math.floor(Math.random() * professionalSuggestions.length)]} ${copingStrategies[Math.floor(Math.random() * copingStrategies.length)]}`,
+                        isEmergency: false
+                    };
+                }
+                if (lowerMsg.includes('estresse') || lowerMsg.includes('sobrecarregado')) {
+                    return {
+                        message: `${empatheticResponses[Math.floor(Math.random() * empatheticResponses.length)]} Quando você se sentir sobrecarregado, ${copingStrategies[Math.floor(Math.random() * copingStrategies.length)]}`,
+                        isEmergency: false
+                    };
+                }
+                return {
+                    message: "Obrigado por compartilhar isso comigo. Estou aqui para ouvir e apoiar você no que precisar. Gostaria de me contar mais sobre como está se sentindo?",
+                    isEmergency: false
+                };
+            }
+        });
+    </script>
+</body>
+</html>

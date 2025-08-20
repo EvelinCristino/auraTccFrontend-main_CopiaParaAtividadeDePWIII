@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ansiedade tem Solução - Comunidade</title>
+  <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom font for the heading to match style */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Roboto&display=swap');
+
+    :root {
+      --green-bg: #758352;
+      /* Sidebar background */
+      --green-border: #7d9466;
+      /* Sidebar border */
+      --bg-main: #f6f2ed;
+      /* Main background */
+      --text-dark: #4a2f19;
+      /* Dark brown text */
+      --text-light: #5d4a3d;
+      /* Medium brown text */
+      --box-bg: #ffffff;
+      /* White squares background */
+      --box-light-bg: #f0f0ef;
+      --btn-bg: #d9c8b9;
+      /* Add button background */
+      --btn-hover-bg: #c7b19a;
+      --input-bg: #fff;
+      --icon-color: #4a2f19;
+    }
+
+    /* Custom scroll for horizontal category list */
+    .category-scroll::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .category-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .category-scroll::-webkit-scrollbar-thumb {
+      background-color: #C2C2C2;
+      border-radius: 100px;
+    }
+
+    body {
+      background-color: #f8f6f3;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: var(--bg-main);
+      font-family: 'Urbanist', sans-serif;
+      color: var(--text-dark);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      user-select: none;
+    }
+
+    /* Container full screen with border radius and border */
+    .app-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      background: var(--bg-main);
+      border-radius: 0;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    /* Sidebar styles */
+    .sidebar {
+      background-color: #73804F;
+      width: 100px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      margin: 10px 0;
+      background-color: transparent;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .sidebar img {
+      width: 68px;
+      height: 28px;
+    }
+
+    .sidebar .icons {
+      margin-top: 130%;
+    }
+
+    .spacer {
+      flex: 1;
+    }
+
+    /*Configuração*/
+    .settings-btn {
+      position: absolute;
+      top: 32px;
+      right: 48px;
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--text-dark);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .settings-btn:hover {
+      opacity: 1;
+    }
+
+    main {
+      flex: 1;
+      background-color: #f8f6f3;
+      border-top-right-radius: 32px;
+      border-bottom-right-radius: 32px;
+      padding: 40px 48px 48px 40px;
+      overflow-y: auto;
+      flex-direction: column;
+      padding: 2rem;
+      position: relative;
+      min-height: 100vh;
+
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      user-select: text;
+    }
+
+    header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1.675rem;
+      color: #4a3820;
+      margin: 0;
+      user-select: text;
+    }
+
+    section.article-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+    }
+
+    .article-info-left {
+      flex: 1;
+      min-width: 250px;
+      user-select: text;
+    }
+
+    .article-info-left h2 {
+      font-weight: 600;
+      font-size: 1.375rem;
+      line-height: 1.3;
+      color: #8ea56d;
+      margin: 0 0 4px 0;
+    }
+
+    .article-info-left small {
+      font-size: 0.875rem;
+      color: #3f3421;
+      user-select: text;
+    }
+
+    .article-info-right {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      min-width: 120px;
+      user-select: none;
+    }
+
+    .action-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #3f3421;
+      user-select: none;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .action-group svg {
+      width: 22px;
+      height: 22px;
+      stroke: #3f3421;
+      stroke-width: 1.7;
+      fill: transparent;
+      transition: fill 0.3s ease, stroke 0.3s ease;
+      user-select: none;
+    }
+
+    .action-group.liked svg {
+      fill: #8ea56d;
+      stroke: #67823b;
+    }
+
+    .action-group.liked:hover svg {
+      fill: #9ab674;
+      stroke: #56702f;
+    }
+
+    .action-group.saved svg {
+      stroke-width: 1.6;
+    }
+
+    .action-group:hover {
+      color: #56702f;
+    }
+
+    .action-group.saved.saved-active svg {
+      fill: #8ea56d;
+      stroke: #67823b;
+    }
+
+    .action-group.saved.saved-active:hover svg {
+      fill: #9ab674;
+      stroke: #56702f;
+    }
+
+    .save-button.saved-active svg {
+      fill: #8B5E3C;
+      /* marrom sólido */
+      stroke: #6E432A;
+      /* contorno marrom escuro */
+    }
+
+    .save-button.saved-active:hover svg {
+      fill: #A37351;
+      /* marrom claro no hover */
+      stroke: #7F5337;
+      /* contorno marrom mais claro no hover */
+    }
+
+    .article-image {
+      background-color: #d8d8d8;
+      width: 100%;
+      height: 160px;
+      margin: 28px 0;
+      border-radius: 6px;
+      user-select: none;
+    }
+
+    article p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #1f1a13;
+      margin-bottom: 20px;
+      user-select: text;
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 740px) {
+      main {
+        padding: 24px 32px 32px 24px;
+      }
+
+      .article-info-right {
+        justify-content: flex-start;
+        gap: 32px;
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-[#F9F7F3] font-sans text-[#4B3A2B] h-screen flex">
+  <div class="app-container" role="main">
+    <nav class="sidebar">
+      <a href="#"><img src="img/Logo.png" alt="Logo" style="margin-top: 30%;"></a>
+      <div class="icons">
+        <a href="home.html"><img src="img/icons-menu/home.png" alt="Home"
+            style="margin-bottom: 190%; width: 35px; height: 25px;"></a>
+        <a href="banco.html"><img src="img/icons-menu/banco.png" alt="Banco de Psicólogos"
+            style="margin-bottom: 60%; width: 40px; height: 40px;"></a>
+        <a href="metricas.html"><img src="img/icons-menu/metricas.png" alt="Métricas"
+            style="width: 35px; height: 25px; margin-top:50%"></a>
+        <a href="comunidade.html"><img src="img/icons-menu/comunidade.png" alt="Comunidade"
+            style="width: 38px; margin-top: 160%;"></a>
+      </div>
+      <div class="spacer"></div>
+      <a href="#"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+    </nav>
+
+    <!-- Botão de Configurações no canto superior direito -->
+    <button id="settingsBtn" class="settings-btn" aria-label="Configurações" title="Configurações">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path
+          d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z">
+        </path>
+      </svg>
+    </button>
+
+
+    <main aria-label="Article read more content">
+      <header>
+        <h1>Comunidade</h1>
+
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M19.4 15a7.97 7.97 0 01-1.3 2.4c-.28.28-.62.49-1 .62a9 9 0 01-9.2 0c-.35-.15-.66-.39-.9-.7a8 8 0 01.1-11.3c.3-.3.69-.53 1.12-.65a9 9 0 0111.4 7.8zM12 9a3 3 0 100 6 3 3 0 000-6z" />
+        </svg>
+        </button>
+      </header>
+
+      <section class="article-header" aria-label="Article information">
+        <div class="article-info-left">
+          <h2 tabindex="0">Ansiedade Tem Solução</h2>
+          <small tabindex="0">Por: Psicólogo Michele</small>
+        </div>
+        <div class="article-info-right" role="region" aria-live="polite" aria-atomic="true" aria-label="Interações">
+          <div class="action-group like-button" role="button" tabindex="0" aria-pressed="false"
+            aria-label="Curtir artigo" title="Curtir artigo">
+            <span class="like-count" aria-live="polite" aria-atomic="true">223</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" role="img" aria-hidden="true"
+              aria-label="Like heart icon" viewBox="0 0 24 24">
+              <path stroke-linejoin="round" stroke-linecap="round"
+                d="M12 21c-4-2.7-6.9-4.3-7-7.6c-.1-2 1-4 3.3-4a3.7 3.7 0 012.6 1.7a3.7 3.7 0 012.6-1.7c2.3 0 3.4 2 3.3 4c0 3.3-3 4.9-7 7.6z" />
+            </svg>
+          </div>
+          <div class="action-group save-button" role="button" tabindex="0" aria-pressed="false"
+            aria-label="Salvar artigo para mais tarde" title="Salvar artigo para mais tarde">
+            <span class="save-count" aria-live="polite" aria-atomic="true">223</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" role="img" aria-hidden="true"
+              aria-label="Save flag icon" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 5v14l7-7 7 7V5H5z" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <div class="article-image" role="img"
+        aria-label="Imagem relacionada ao artigo sobre ansiedade, cinza claro em retângulo"></div>
+
+      <article>
+        <p class="mb-4 leading-relaxed text-justify">
+          A ansiedade é uma resposta natural do corpo diante de desafios, mudanças ou situações de estresse. Ela nos
+          alerta para possíveis perigos e prepara nossa mente e corpo para reagir. No entanto, quando se torna constante
+          ou intensa, pode comprometer nossa saúde, relacionamentos e desempenho profissional. Sentir tensão,
+          preocupação excessiva, dificuldade de concentração e insônia são sinais de que a ansiedade está ultrapassando
+          limites saudáveis.
+        </p>
+
+        <p class="mb-4 leading-relaxed text-justify">
+          A boa notícia é que a ansiedade pode ser compreendida, gerenciada e até superada. Com conhecimento, hábitos
+          saudáveis e apoio adequado, é possível recuperar a serenidade e viver de forma plena.
+        </p>
+
+        <h2 class="text-2xl font-semibold mb-3">1. Entenda a sua ansiedade</h2>
+        <p class="mb-4 leading-relaxed text-justify">
+          O primeiro passo para controlar a ansiedade é reconhecê-la. Observe os momentos em que ela surge, os gatilhos
+          e como o corpo reage. Sintomas físicos, como coração acelerado, suor nas mãos ou tensão muscular, são comuns e
+          não significam fraqueza. Ao identificar padrões, você se torna mais consciente e capaz de aplicar estratégias
+          eficazes.
+        </p>
+
+        <h2 class="text-2xl font-semibold mb-3">2. Busque ajuda profissional</h2>
+        <p class="mb-4 leading-relaxed text-justify">
+          Psicólogos e psiquiatras são aliados essenciais no enfrentamento da ansiedade. Terapias como a <strong>Terapia
+            Cognitivo-Comportamental (TCC)</strong> ajudam a reconhecer pensamentos negativos e a substituir padrões de
+          preocupação excessiva por atitudes construtivas. Em casos específicos, medicamentos podem ser indicados,
+          sempre sob supervisão médica.
+        </p>
+
+        <h2 class="text-2xl font-semibold mb-3">3. Pratique o autocuidado diariamente</h2>
+        <p class="mb-4 leading-relaxed text-justify">
+          Cuidar do corpo e da mente é fundamental para reduzir a ansiedade. <strong>Meditação, respiração profunda,
+            yoga e exercícios físicos</strong> fortalecem o equilíbrio emocional. Reserve alguns minutos do dia para se
+          desconectar, praticar hobbies ou simplesmente respirar conscientemente.
+        </p>
+
+        <h2 class="text-2xl font-semibold mb-3">4. Durma bem e alimente-se de forma equilibrada</h2>
+        <p class="mb-4 leading-relaxed text-justify">
+          O sono reparador é um dos pilares do bem-estar emocional. Procure dormir entre 7 e 9 horas por noite, evitando
+          telas e estímulos próximos à hora de dormir. A alimentação também impacta diretamente a mente: reduza açúcar,
+          cafeína e ultraprocessados, e priorize frutas, verduras, proteínas magras e alimentos ricos em ômega-3.
+        </p>
+
+        <h2 class="text-2xl font-semibold mb-3">5. Fortaleça seus relacionamentos</h2>
+        <p class="mb-4 leading-relaxed text-justify">
+          Compartilhar sentimentos com amigos, familiares ou grupos de apoio diminui o isolamento e promove acolhimento.
+          O simples ato de conversar sobre medos e desafios ajuda a aliviar a tensão e cria uma rede de segurança
+          emocional. Relações saudáveis são aliadas poderosas contra a ansiedade.
+        </p>
+
+        <h2 class="text-2xl font-semibold mb-3">6. Organize sua rotina e pequenas metas</h2>
+        <p class="mb-4 leading-relaxed text-justify">
+          Planejar o dia e estabelecer metas realistas reduz a sensação de sobrecarga. Faça listas, priorize tarefas e
+          divida grandes objetivos em etapas menores. Pequenas conquistas reforçam o sentimento de controle e promovem
+          autoconfiança.
+        </p>
+
+        <h2 class="text-2xl font-semibold mb-3">7. Desenvolva resiliência e autocompaixão</h2>
+        <p class="mb-4 leading-relaxed text-justify">
+          A ansiedade não desaparece da noite para o dia, e é normal ter altos e baixos. Desenvolver resiliência
+          significa aprender com desafios sem se punir. Pratique a autocompaixão, reconhecendo que cuidar da saúde
+          mental é um processo contínuo.
+        </p>
+
+        <p class="mb-4 leading-relaxed text-justify">
+          <strong>Lembre-se:</strong> cada pequeno passo conta. Com consciência, apoio e hábitos saudáveis, a ansiedade
+          pode ser controlada, permitindo que você recupere a tranquilidade, aproveite melhor cada momento e viva com
+          mais leveza e confiança.
+        </p>
+      </article>
+    </main>
+  </div>
+
+  <script>
+    // Element references
+    const likeBtn = document.querySelector('.like-button');
+    const saveBtn = document.querySelector('.save-button');
+    const likeCountElem = document.querySelector('.like-count');
+    const saveCountElem = document.querySelector('.save-count');
+
+    // Start counts from initial rendered values
+    let likeCount = parseInt(likeCountElem.textContent);
+    let saveCount = parseInt(saveCountElem.textContent);
+    let liked = false;
+    let saved = false;
+
+    // Utility function to update ARIA-pressed and visual styles for like
+    function toggleLike() {
+      liked = !liked;
+      if (liked) {
+        likeCount++;
+        likeBtn.classList.add('liked');
+        likeBtn.setAttribute('aria-pressed', 'true');
+      } else {
+        likeCount--;
+        likeBtn.classList.remove('liked');
+        likeBtn.setAttribute('aria-pressed', 'false');
+      }
+      likeCountElem.textContent = likeCount;
+    }
+
+    // Utility function to update ARIA-pressed and visual styles for save
+    function toggleSave() {
+      saved = !saved;
+      if (saved) {
+        saveCount++;
+        saveBtn.classList.add('saved-active');
+        saveBtn.setAttribute('aria-pressed', 'true');
+      } else {
+        saveCount--;
+        saveBtn.classList.remove('saved-active');
+        saveBtn.setAttribute('aria-pressed', 'false');
+      }
+      saveCountElem.textContent = saveCount;
+    }
+
+    // Event listeners for click and keyboard on buttons
+    likeBtn.addEventListener('click', toggleLike);
+    likeBtn.addEventListener('keydown', (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleLike();
+      }
+    });
+
+    saveBtn.addEventListener('click', toggleSave);
+    saveBtn.addEventListener('keydown', (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        toggleSave();
+      }
+    });
+  </script>
+</body>
+
+</html>

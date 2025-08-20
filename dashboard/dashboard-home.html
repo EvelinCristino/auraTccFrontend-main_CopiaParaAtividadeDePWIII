@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<link rel="icon" type="image/x-icon" href="imagens/logo-janela.png">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'urbanist': ['Urbanist', 'sans-serif']
+                    },
+                    colors: {
+                        'sage': '#73804F',
+                        'cream': '#F7F4F2',
+                        'light-green': '#C8D4A3'
+                    }
+                }
+            }
+        }
+    </script>
+    <title>Dashboard Médico</title>
+</head>
+
+<body class="bg-gray-100 flex font-urbanist">
+    <!-- Menu lateral -->
+    <nav class="bg-sage w-[100px] h-screen flex flex-col items-center py-5 rounded-tr-[25px] rounded-br-[25px] fixed left-0 top-0 z-10">
+        <!-- Logo topo -->
+        <a href="#" class="mt-[20px]">
+            <img src="imagens/Logo.png" alt="Logo" class="w-[68px] h-[28px]">
+        </a>
+
+        <!-- Ícones do menu -->
+        <div class="mt-[60px] flex flex-col items-center space-y-8">
+            <a href="#" class="flex items-center justify-center w-[48px] h-[48px] rounded-lg transition-colors duration-200 bg-white/20">
+                <img src="imagens/home.png" alt="Home" class="w-[35px] h-[25px]">
+            </a>
+            <a href="#" class="flex items-center justify-center w-[48px] h-[48px] rounded-lg transition-colors duration-200">
+                <img src="imagens/banco.png" alt="Banco de Psicólogos" class="w-[40px] h-[40px]">
+            </a>
+            <a href="#" class="flex items-center justify-center w-[48px] h-[48px] rounded-lg transition-colors duration-200">
+                <img src="imagens/metricas.png" alt="Métricas" class="w-[35px] h-[25px]">
+            </a>
+            <a href="#" class="flex items-center justify-center w-[48px] h-[48px] rounded-lg transition-colors duration-200">
+                <img src="imagens/comunidade.png" alt="Comunidade" class="w-[38px] h-[38px]">
+            </a>
+        </div>
+
+        <div class="flex-1"></div>
+
+        <!-- Ícone de saída -->
+        <a href="#" class="flex items-center justify-center w-[48px] h-[48px] mb-5">
+            <img src="imagens/sair.png" alt="Sair" class="w-[49px] h-[49px]">
+        </a>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <div class="flex-1 ml-[100px] bg-cream rounded-[25px] m-4 ml-[104px] overflow-hidden">
+        <div class="flex h-full">
+            <!-- Área principal -->
+            <div class="flex-1 p-8">
+                <!-- Header -->
+                <div class="relative w-full h-[190px] mb-8">
+                    <!-- Settings icon -->
+                    <button class="absolute top-[14px] right-0 w-11 h-11 hover:bg-gray-200 transition-colors rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.82,11.69,4.82,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+                        </svg>
+                    </button>
+
+                    <!-- Date -->
+                    <div class="absolute top-0 left-0">
+                        <p class="text-[26px] font-extrabold text-[#4e3321] leading-[56px] tracking-[-0.39px]" style="font-family: 'Urbanist', sans-serif;">Qui, 04 Abr, 2025</p>
+                    </div>
+
+                    <!-- Greeting -->
+                    <div class="absolute top-[109px] left-[152px]">
+                        <h1 class="text-[48px] font-extrabold text-[#4e3321] leading-[56px] tracking-[-0.72px] whitespace-nowrap" style="font-family: 'Urbanist', sans-serif;">Olá, Dr(a)! 👋</h1>
+                    </div>
+
+                    <!-- Complex button with overlapping elements -->
+                    <div class="absolute top-[83px] left-0 w-[112px] h-[107px]">
+                        <div class="relative h-full rounded-full">
+                            <!-- Main white circular button -->
+                            <div class="absolute top-0 left-0 w-[112px] h-[107px] bg-white rounded-full overflow-hidden shadow-lg">
+                                <!-- Arrow icon -->
+                                <img src="imagens/user.png" alt="">
+                            </div>
+                    
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consultas de Hoje -->
+                <div class="mb-8">
+                    <div class="bg-white rounded-[32px] p-6">
+                        <div class="flex items-end justify-between mb-5">
+                            <h2 class="text-[40px] font-bold text-[#4f3422] leading-[56px] tracking-[-0.6px]" style="font-family: 'Urbanist', sans-serif;">Consultas de Hoje</h2>
+                            <button class="w-14 h-14 bg-[#f6f3f1] rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                                <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="flex gap-5">
+                            <!-- Consulta 1 -->
+                            <div class="w-[237px] h-[170px] bg-white rounded-b-[20px] relative">
+                                <div class="h-[88px] bg-[#d5e2bc] relative">
+                                    <!-- Vertical line accent -->
+                                    <div class="absolute left-[10px] top-[6px] w-[7px] h-[63px] bg-sage rounded-full"></div>
+                                    
+                                    <!-- Number circle -->
+                                    <div class="absolute left-[26px] top-[12px] w-[52px] h-[52px] bg-white rounded-full flex items-center justify-center">
+                                        <span class="text-[25px] font-bold text-[#202020] tracking-[-0.05px]" style="font-family: 'Urbanist', sans-serif;">16</span>
+                                    </div>
+                                    
+                                    <!-- Day and time -->
+                                    <div class="absolute left-[89px] top-[22px]">
+                                        <div class="text-[18px] font-extrabold text-[#413b3b] tracking-[-0.04px]" style="font-family: 'Urbanist', sans-serif;">Segunda</div>
+                                        <div class="text-[20px] font-normal text-[#413b3b] tracking-[-0.04px] leading-[30px]" style="font-family: 'Urbanist', sans-serif;">09:30</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Description -->
+                                <p class="absolute top-[103px] left-[22px] w-[175px] text-[15px] font-normal text-[#413b3b] tracking-[-0.03px] leading-[20px]" style="font-family: 'Urbanist', sans-serif;">
+                                    Conferência online com Paciente X, escrito dia tal
+                                </p>
+                            </div>
+
+                            <!-- Consulta 2 -->
+                            <div class="w-[237px] h-[170px] bg-white rounded-b-[20px] relative">
+                                <div class="h-[88px] bg-[#d5e2bc] relative">
+                                    <!-- Vertical line accent -->
+                                    <div class="absolute left-[10px] top-[6px] w-[7px] h-[63px] bg-sage rounded-full"></div>
+                                    
+                                    <!-- Number circle -->
+                                    <div class="absolute left-[26px] top-[12px] w-[52px] h-[52px] bg-white rounded-full flex items-center justify-center">
+                                        <span class="text-[25px] font-bold text-[#202020] tracking-[-0.05px]" style="font-family: 'Urbanist', sans-serif;">17</span>
+                                    </div>
+                                    
+                                    <!-- Day and time -->
+                                    <div class="absolute left-[89px] top-[22px]">
+                                        <div class="text-[18px] font-extrabold text-[#413b3b] tracking-[-0.04px]" style="font-family: 'Urbanist', sans-serif;">Segunda</div>
+                                        <div class="text-[20px] font-normal text-[#413b3b] tracking-[-0.04px] leading-[30px]" style="font-family: 'Urbanist', sans-serif;">10:50</div>
+                                    </div>
+                                    
+                                    <!-- Arrow icon -->
+                                    <div class="absolute right-[13px] top-[32px]">
+                                        <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                
+                                <!-- Description -->
+                                <p class="absolute top-[103px] left-[22px] w-[175px] text-[15px] font-normal text-[#413b3b] tracking-[-0.03px] leading-[20px]" style="font-family: 'Urbanist', sans-serif;">
+                                    Conferência online com Paciente X, escrito dia tal
+                                </p>
+                            </div>
+
+                            <!-- Consulta 3 -->
+                            <div class="w-[237px] h-[170px] bg-white rounded-b-[20px] relative">
+                                <div class="h-[88px] bg-[#d5e2bc] relative">
+                                    <!-- Vertical line accent -->
+                                    <div class="absolute left-[10px] top-[6px] w-[7px] h-[63px] bg-sage rounded-full"></div>
+                                    
+                                    <!-- Number circle -->
+                                    <div class="absolute left-[26px] top-[12px] w-[52px] h-[52px] bg-white rounded-full flex items-center justify-center">
+                                        <span class="text-[25px] font-bold text-[#202020] tracking-[-0.05px]" style="font-family: 'Urbanist', sans-serif;">18</span>
+                                    </div>
+                                    
+                                    <!-- Day and time -->
+                                    <div class="absolute left-[89px] top-[22px]">
+                                        <div class="text-[18px] font-extrabold text-[#413b3b] tracking-[-0.04px]" style="font-family: 'Urbanist', sans-serif;">Segunda</div>
+                                        <div class="text-[20px] font-normal text-[#413b3b] tracking-[-0.04px] leading-[30px]" style="font-family: 'Urbanist', sans-serif;">13:00</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Description -->
+                                <p class="absolute top-[103px] left-[22px] w-[175px] text-[15px] font-normal text-[#413b3b] tracking-[-0.03px] leading-[20px]" style="font-family: 'Urbanist', sans-serif;">
+                                    Conferência online com Paciente X, escrito dia tal
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Minhas últimas publicações -->
+                <div>
+                    <div class="bg-white rounded-[32px] p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-[40px] font-bold text-[#4f3422] leading-[56px] tracking-[-0.6px]" style="font-family: 'Urbanist', sans-serif;">Minhas últimas publicações</h2>
+                            <button class="w-14 h-14 bg-[#f6f3f1] rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
+                                <svg class="w-6 h-6 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="flex gap-5">
+                            <!-- Publicação 1 -->
+                            <div class="w-[350px] h-[134px] relative" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);">
+                                <div class="absolute inset-0 bg-white rounded-[20px] overflow-hidden">
+                                    <div class="absolute top-4 left-4">
+                                        <div class="text-[12px] font-normal text-gray-500 mb-1" style="font-family: 'Urbanist', sans-serif;">00/00/0000</div>
+                                        <h3 class="text-[16px] font-semibold text-gray-800 leading-[20px]" style="font-family: 'Urbanist', sans-serif;">Título da postagem</h3>
+                                    </div>
+                                    
+                                    <!-- Engagement icons and numbers -->
+                                    <div class="absolute bottom-4 left-4 flex items-center gap-4">
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                            </svg>
+                                            <span class="text-[12px] font-medium text-gray-500" style="font-family: 'Urbanist', sans-serif;">223</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                                            </svg>
+                                            <span class="text-[12px] font-medium text-gray-500" style="font-family: 'Urbanist', sans-serif;">223</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Background decoration -->
+                                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-gray-100 to-transparent rounded-bl-full"></div>
+                                </div>
+                            </div>
+
+                            <!-- Publicação 2 -->
+                            <div class="w-[350px] h-[134px] relative" style="box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);">
+                                <div class="absolute inset-0 bg-white rounded-[20px] overflow-hidden">
+                                    <div class="absolute top-4 left-4">
+                                        <div class="text-[12px] font-normal text-gray-500 mb-1" style="font-family: 'Urbanist', sans-serif;">00/00/0000</div>
+                                        <h3 class="text-[16px] font-semibold text-gray-800 leading-[20px]" style="font-family: 'Urbanist', sans-serif;">Título da postagem</h3>
+                                    </div>
+                                    
+                                    <!-- Engagement icons and numbers -->
+                                    <div class="absolute bottom-4 left-4 flex items-center gap-4">
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                            </svg>
+                                            <span class="text-[12px] font-medium text-gray-500" style="font-family: 'Urbanist', sans-serif;">223</span>
+                                        </div>
+                                        <div class="flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/>
+                                            </svg>
+                                            <span class="text-[12px] font-medium text-gray-500" style="font-family: 'Urbanist', sans-serif;">223</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Background decoration -->
+                                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-gray-100 to-transparent rounded-bl-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar direita -->
+            <div class="w-80 bg-white/50 p-6 space-y-6">
+                <!-- Notificações -->
+                <div class="w-[342px] h-[107px]">
+                    <div class="relative w-[342px] h-[107px] bg-white rounded-[30px]">
+                        <!-- Bell icon with background -->
+                        <div class="absolute top-[25px] left-[12px] w-[67px] h-[63px] bg-orange-100 rounded-full flex items-center justify-center">
+                            <!-- Bell icon -->
+                            <svg class="w-8 h-8 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+                            </svg>
+                            
+                            <!-- Green notification dot -->
+                            <div class="absolute top-[4px] left-[50px] w-[12px] h-[11px] bg-[#a6bd6e] rounded-full"></div>
+                        </div>
+                        
+                        <!-- Title -->
+                        <div class="absolute top-[22px] left-[91px]">
+                            <h3 class="text-[23px] font-bold text-[#4e3321] tracking-[-0.12px] leading-normal" style="font-family: 'Urbanist', sans-serif;">Notificações</h3>
+                        </div>
+                        
+                        <!-- Description text -->
+                        <div class="absolute top-[60px] left-[91px] w-[251px]">
+                            <p class="text-[18px] font-medium text-[#4e3321] tracking-[-0.09px] leading-normal" style="font-family: 'Urbanist', sans-serif;">Você tem 4 novas notificações</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Solicitações de contato -->
+                <div class="w-[342px] h-[107px]">
+                    <div class="relative w-[342px] h-[107px] bg-white rounded-[30px]">
+                        <!-- Icon with background -->
+                        <div class="absolute top-[25px] left-[12px] w-[67px] h-[63px] bg-orange-100 rounded-full flex items-center justify-center">
+                            <!-- Contact/Email icon -->
+                            <img src="imagens/message.png">
+
+                            <!-- Green notification dot -->
+                            <div class="absolute top-[4px] left-[50px] w-[12px] h-[11px] bg-[#a6bd6e] rounded-full"></div>
+                        </div>
+                        
+                        <!-- Title -->
+                        <div class="absolute top-[22px] left-[91px]">
+                            <h3 class="text-[22px] font-bold text-[#4e3321] tracking-[-0.11px] leading-normal whitespace-nowrap" style="font-family: 'Urbanist', sans-serif;">Solicitações de contato</h3>
+                        </div>
+                        
+                        <!-- Description text -->
+                        <div class="absolute top-[60px] left-[91px] w-[251px]">
+                            <p class="text-[18px] font-medium text-[#4e3321] tracking-[-0.09px] leading-normal" style="font-family: 'Urbanist', sans-serif;">Você tem 2 novas solicitações</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tarefas recentes -->
+                <div class="w-[342px] h-[126px]">
+                    <div class="relative w-[342px] h-[126px] bg-white rounded-[30px]">
+                        <!-- Icon with background -->
+                        <div class="absolute top-[25px] left-[12px] w-[67px] h-[63px] bg-blue-100 rounded-full flex items-center justify-center">
+                            <!-- Tasks/Document icon -->
+                            <img src="imagens/prancheta.png" alt="">
+                            
+                            <!-- Green notification dot -->
+                            <div class="absolute top-[4px] left-[50px] w-[12px] h-[11px] bg-[#a6bd6e] rounded-full"></div>
+                        </div>
+                        
+                        <!-- Title -->
+                        <div class="absolute top-[28px] left-[91px] w-[222px]">
+                            <h3 class="text-[24px] font-bold text-[#4e3321] tracking-[-0.12px] leading-normal" style="font-family: 'Urbanist', sans-serif;">Tarefas recentes</h3>
+                        </div>
+                        
+                        <!-- Description text -->
+                        <div class="absolute top-[69px] left-[91px] w-[222px]">
+                            <p class="text-[16px] font-medium text-[#4e3321] tracking-[-0.08px] leading-normal" style="font-family: 'Urbanist', sans-serif;">Ver tarefas enviadas pelos pacientes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pacientes -->
+                <div class="w-[342px] h-[165px]">
+                    <div class="relative w-[342px] h-[165px] bg-white rounded-[30px]">
+                        <!-- Icon with background and decorative elements -->
+                        <div class="absolute top-[25px] left-[12px] w-[67px] h-[63px] bg-green-100 rounded-full flex items-center justify-center">
+                            <!-- Patient/User icon -->
+                            <img src="imagens/pacientes.png" alt="">
+                    
+                            <!-- Green notification dot -->
+                            <div class="absolute top-[4px] left-[50px] w-[12px] h-[11px] bg-[#a6bd6e] rounded-full"></div>
+                            <div class="absolute top-[7px] left-[5px] w-[14px] h-[13px]">
+                                <div class="absolute top-[6px] left-0 w-[14px] h-[7px]"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Title -->
+                        <div class="absolute top-[29px] left-[91px]">
+                            <h3 class="text-[24px] font-bold text-[#4e3321] tracking-[-0.12px] leading-normal" style="font-family: 'Urbanist', sans-serif;">Pacientes</h3>
+                        </div>
+                        
+                        <!-- Description text -->
+                        <div class="absolute top-[59px] left-[91px] w-[222px]">
+                            <p class="text-[16px] font-medium text-[#4e3321] tracking-[-0.08px] leading-normal" style="font-family: 'Urbanist', sans-serif;">Ver todos</p>
+                        </div>
+                        
+                        <!-- Search input -->
+                        <div class="absolute top-[95px] left-[33px] w-[282px] h-[38px]">
+                            <div class="relative w-[280px] h-[38px] bg-[#f6f3f1] rounded-[20px]">
+                                <input 
+                                    type="text" 
+                                    placeholder="Search" 
+                                    class="absolute top-[10px] left-[29px] w-[54px] text-[16px] font-medium text-[#4e332168] tracking-[-0.08px] bg-transparent border-none outline-none placeholder-[#4e332168]"
+                                    style="font-family: 'Urbanist', sans-serif;"
+                                >
+                                <!-- Search icon -->
+                                <div class="absolute top-[8px] left-[235px] w-[24px] h-[24px]">
+                                    <img src="imagens/lupa.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+:root {
+  --dark-brown: #3D2D21;
+  --light-green: #B3C78A;
+  --gray-light: #F7F6F4;
+  --input-border: #E2E2E2;
+  --input-placeholder: #A09F9F;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f9f7f3;
+  color: #3c2f2f;
+}
+
+.input-custom {
+  @apply w-full rounded-lg border border-gray-300 bg-white py-2 px-4 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-300;
+}
+
+/* Custom scroll behavior for the panel */
+@media (min-width: 768px) {
+  #img-section {
+    border-radius: 1rem 0 0 1rem;
+    background: radial-gradient(circle at center, #cbdb9a, #b3c58a);
+    box-shadow: inset 40px 40px 80px #a8b573, inset -40px -40px 80px #e0efd4;
+  }
+}
+
+/* Custom "Log in" button style */
+.btn-submit {
+  background-color: #b3c58a;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+.btn-submit:hover,
+.btn-submit:focus {
+  background-color: #87994a;
+  outline: none;
+  color: white;
+}
+
+.left-bottom-text {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #f7f6f4;
+  text-shadow: 1px 1px 2px #588417cc;
+  user-select: none;
+}
+.left-bottom-text b {
+  font-weight: 900;
+}
+
+/*Link de Login*/
+.forgot-link {
+  font-size: 0.875rem;
+  color: #b3c58a;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+.forgot-link:hover,
+.forgot-link:focus {
+  color: #87994a;
+  outline: none;
+  text-decoration: underline;
+}
+
+/* Botao Profissional */
+.back-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ffffffcc;
+  color: #3c2f2f;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 9999px;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+  background: #c7d29bcc;
+}
+.back-arrow {
+  display: inline-block;
+  border: solid #3c2f2f;
+  border-width: 0 3px 3px 0;
+  padding: 3px;
+  transform: rotate(135deg);
+}
+
+/*Campos do Formulario*/
+input {
+  border: 1.5px solid var(--input-border);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  outline-offset: 2px;
+  outline-color: var(--light-green);
+  transition: border-color 0.3s ease;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--dark-brown);
+}
+input::placeholder {
+  color: var(--input-placeholder);
+  font-weight: 400;
+}
+input:focus {
+  border-color: var(--light-green);
+  box-shadow: 0 0 6px var(--light-green);
+}
