@@ -56,7 +56,7 @@
         <input 
           id="senha" 
           name="senha" 
-          type="senha" 
+          type="password" 
           placeholder="" 
           required 
           autocomplete="current-senha" 
@@ -97,7 +97,7 @@
       }
       
       try {
-        // Simulação de login - substitua pela sua API real
+        
         const response = await fetch('https://auratccbackend.onrender.com/api/pacientes/login', {
           method: 'POST',
           headers: {
@@ -106,12 +106,14 @@
           body: JSON.stringify({ email, senha })
         });
         
+        const data = await response.json();
+
         if (response.ok) {
-          const userData = await response.json();
-          
-          // Salva dados do usuário no localStorage
-          localStorage.setItem('userData', JSON.stringify(userData));
-          
+          // Salva token e nome separado no localStorage
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('platformUserName', data.paciente.nomeCompleto); // ✅ nome do usuário
+          localStorage.setItem('userId', data.paciente._id);
+
           // Redireciona para a home
           window.location.href = 'home.html';
         } else {
