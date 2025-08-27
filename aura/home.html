@@ -554,6 +554,15 @@
       left: 50%;
       transform: translate(-50%, -50%);
     }
+
+    #lembreteModal .modal-content {
+  max-width: 600px;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+   overflow-y: auto;  
+}
+
   </style>
 </head>
 
@@ -572,7 +581,7 @@
             style="width: 38px; margin-top: 160%;"></a>
       </div>
       <div class="spacer"></div>
-      <a href="#"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
+      <a href="login.html"><img src="img/icons-menu/sair.png" alt="Sair" style="width: 49px; height: 49px;"></a>
     </nav>
 
     <main class="content" role="region" aria-label="Página inicial da plataforma">
@@ -669,7 +678,7 @@
         <div class="section-header" style="display:flex; justify-content: space-between; align-items: flex-end;">
           <h2 class="section-title" style="margin-bottom: 12px;">Lembretes</h2>
           <button class="add-reminder-btn" style="margin-top: 40px;" type="button" id="addReminderBtn"
-            aria-label="Adicionar lembrete" title="Adicionar lembrete">
+            aria-label="Adicionar lembrete" title="Adicionar lembrete" onclick="">
             Adicionar
             <span class="add-icon-circle" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" stroke="currentColor"
@@ -745,6 +754,67 @@
         </div>
       </div>
 
+      <!-- Modal de Criar Lembrete -->
+<div class="modal" id="lembreteModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      Novo Lembrete
+      <span class="close" id="closeLembrete">&times;</span>
+    </div>
+
+    <form id="formLembrete" class="p-6 flex flex-col gap-4">
+      <div>
+        <label class="font-semibold">Tipo:</label>
+        <select class="w-full p-2 rounded-lg bg-[#f4f2ef]" required>
+          <option value="Consulta">Consulta</option>
+          <option value="Exame">Exame</option>
+          <option value="Outro">Outro</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="font-semibold">Local:</label>
+        <input type="text" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Digite o local" required>
+      </div>
+
+      <div>
+        <label class="font-semibold">Doutor:</label>
+        <input type="text" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Nome do doutor" required>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="font-semibold">Data:</label>
+          <input type="date" class="w-full p-2 rounded-lg bg-[#f4f2ef]" required>
+        </div>
+        <div>
+          <label class="font-semibold">Horário:</label>
+          <input type="time" class="w-full p-2 rounded-lg bg-[#f4f2ef]" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="font-semibold">Observações:</label>
+        <textarea rows="3" class="w-full p-2 rounded-lg bg-[#f4f2ef]" placeholder="Digite algo se necessário..."></textarea>
+      </div>
+
+      <button type="submit" class="bg-[#4a2f19] text-white py-3 rounded-xl font-semibold hover:bg-[#2a1f15]">Salvar Lembrete</button>
+    </form>
+  
+  </div>
+
+   <!-- Modal de confirmação -->
+      <div class="modal" id="confirmModal2">
+        <div class="confirm-content">
+          <span class="close" id="closeConfirm">&times;</span>
+          <div class="checkmark">✔</div>
+          <h2>Lembrete Criado!</h2>
+        </div>
+      </div>
+
+</div>
+
+
     </main>
   </div>
 
@@ -752,235 +822,153 @@
     // const userId = localStorage.getItem('userId');
     // console.log('ID do paciente logado:', userId);
 
-    (function () {
-      // For demo purposes: Simulate user registry with name stored locally
-      const userNameKey = 'platformUserName';
+(function () {
+  const userNameKey = 'platformUserName';
+  const remindersStorageKey = 'platformReminders';
 
-      // Set or get user name from localStorage
-      function getUserName() {
-        let name = localStorage.getItem(userNameKey);
-        if (!name) {
-          localStorage.setItem(userNameKey, defaultUser);
-          name = defaultUser;
-        }
-        return name;
-      }
+  // --- USER / DATA ---
+  function getUserName() {
+    let name = localStorage.getItem(userNameKey);
+    if (!name) {
+      localStorage.setItem(userNameKey, defaultUser);
+      name = defaultUser;
+    }
+    return name;
+  }
 
-      // Date display formatted: "Qui, 04 Abr, 2025"
-      const dateDisplay = document.getElementById('date-display');
-      const greetingText = document.getElementById('greeting-text');
+  const dateDisplay = document.getElementById('date-display');
+  const greetingText = document.getElementById('greeting-text');
 
-      function formatDate(date) {
-        const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-        const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-        const dayName = days[date.getDay()];
-        const dayNumber = String(date.getDate()).padStart(2, '0');
-        const monthName = months[date.getMonth()];
-        const year = date.getFullYear();
-        return `${dayName}, ${dayNumber} ${monthName}, ${year}`;
-      }
+  function formatDate(date) {
+    const days = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    return `${days[date.getDay()]}, ${String(date.getDate()).padStart(2, '0')} ${months[date.getMonth()]}, ${date.getFullYear()}`;
+  }
+  function updateDate() {
+    const now = new Date();
+    dateDisplay.textContent = formatDate(now);
+    dateDisplay.setAttribute('datetime', now.toISOString());
+  }
+  function updateGreeting() {
+    greetingText.textContent = `Olá, ${getUserName()} `;
+  }
 
-      // Initialize date
-      function updateDate() {
-        const now = new Date();
-        dateDisplay.textContent = formatDate(now);
-        dateDisplay.setAttribute('datetime', now.toISOString());
-      }
+  // --- REMINDERS ---
+  function loadReminders() {
+    const json = localStorage.getItem(remindersStorageKey);
+    if (json) {
+      try { return JSON.parse(json); } catch { return []; }
+    }
+    return [];
+  }
+  function saveReminders(reminders) {
+    localStorage.setItem(remindersStorageKey, JSON.stringify(reminders));
+  }
 
-      // Initialize greeting text
-      function updateGreeting() {
-        const name = getUserName();
-        greetingText.textContent = `Olá, ${name} `;
-      }
+  const reminderIconSVG = `
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#4a2f19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
+      <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>`;
 
-      // REMINDERS FUNCTIONALITY
-      // Local storage key for reminders
-      const remindersStorageKey = 'platformReminders';
+  function renderReminders(reminders) {
+    const container = document.getElementById('remindersContainer');
+    container.innerHTML = '';
+    reminders.forEach(reminder => {
+      const reminderDiv = document.createElement('div');
+      reminderDiv.className = 'reminder-card';
+      if (reminder.completed) reminderDiv.classList.add('completed');
 
-      // Default reminders if none saved
-      const defaultReminders = [
-        { id: 1, title: 'Lembrete 1', description: 'Consulta legal' },
-        { id: 2, title: 'Lembrete 2', description: 'Consulta legal' },
-        { id: 3, title: 'Lembrete 3', description: 'Consulta legal' },
-        { id: 4, title: 'Lembrete 4', description: 'Consulta legal' }
-      ];
+      reminderDiv.innerHTML = `
+        <div class="reminder-icon">${reminderIconSVG}</div>
+        <div class="reminder-text">
+          <div class="reminder-title">${reminder.title}</div>
+          <div>${reminder.description}</div>
+        </div>
+        <div class="reminder-actions" style="margin-left:auto; display:flex; gap:8px;">
+          <button class="complete-btn" title="Concluir">✔</button>
+          <button class="delete-btn" title="Excluir">✖</button>
+        </div>
+      `;
+      container.appendChild(reminderDiv);
 
-      // Load reminders from localStorage or default
-      function loadReminders() {
-        const remindersJson = localStorage.getItem(remindersStorageKey);
-        if (remindersJson) {
-          try {
-            const rs = JSON.parse(remindersJson);
-            if (Array.isArray(rs)) return rs;
-          } catch (e) {
-            return defaultReminders;
-          }
-        }
-        return defaultReminders;
-      }
-
-      // Save reminders to localStorage
-      function saveReminders(reminders) {
-        localStorage.setItem(remindersStorageKey, JSON.stringify(reminders));
-      }
-
-      // Reminder icon SVG markup
-      const reminderIconSVG = `
-        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#4a2f19" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" viewBox="0 0 24 24">
-          <rect x="3" y="4" width="18" height="16" rx="2" ry="2"></rect>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="3" y1="10" x2="21" y2="10"></line>
-        </svg>`;
-
-      // Render reminders UI
-      function renderReminders(reminders) {
-        const container = document.getElementById('remindersContainer');
-        container.innerHTML = '';
-        reminders.forEach((reminder, idx) => {
-          const reminderDiv = document.createElement('div');
-          reminderDiv.className = 'reminder-card';
-          reminderDiv.setAttribute('tabindex', '-1');
-          reminderDiv.setAttribute('role', 'listitem');
-          reminderDiv.innerHTML = `
-            <div class="reminder-icon" aria-hidden="true">${reminderIconSVG}</div>
-            <div class="reminder-text">
-              <div class="reminder-title">${escapeHTML(reminder.title)}</div>
-              <div>${escapeHTML(reminder.description)}</div>
-            </div>`;
-          container.appendChild(reminderDiv);
-        });
-      }
-
-      // Escape HTML to avoid injection
-      function escapeHTML(str) {
-        return str.replace(/[&<>"']/g, function (m) {
-          return ({
-            '&': "&amp;",
-            '<': "&lt;",
-            '>': "&gt;",
-            '"': "&quot;",
-            "'": "&#39;"
-          })[m];
-        });
-      }
-
-      // Add reminder logic
-      function addReminder() {
-        const titleInput = prompt('Digite o título do lembrete:', '');
-        if (titleInput === null) return; // Cancelled
-        const descInput = prompt('Digite a descrição do lembrete:', '');
-        if (descInput === null) return; // Cancelled
-        if (!titleInput.trim()) {
-          alert('Título obrigatório para o lembrete.');
-          return;
-        }
-
-        const reminders = loadReminders();
-        const newId = reminders.length > 0 ? reminders[reminders.length - 1].id + 1 : 1;
-
-        reminders.push({
-          id: newId,
-          title: titleInput.trim(),
-          description: descInput.trim() || ''
-        });
+      // completar
+      reminderDiv.querySelector('.complete-btn').addEventListener('click', () => {
+        reminder.completed = !reminder.completed;
         saveReminders(reminders);
         renderReminders(reminders);
-      }
-
-      // Logout function (placeholder)
-      window.logout = function () {
-        alert("Logout triggered!");
-      }
-
-      // Event listeners for buttons (metrics as buttons)
-
-      document.getElementById('btn-diary').addEventListener('click', () => alert('Navegar para o Diário'));
-      document.getElementById('btn-setting-mood').addEventListener('click', () => alert('Navegar para Configuração de Humor'));
-      document.getElementById('addReminderBtn').addEventListener('click', addReminder);
-
-      // Initialize on load
-      function init() {
-        updateDate();
-        updateGreeting();
-        renderReminders(loadReminders());
-      }
-
-      window.addEventListener('load', init);
-
-      //Aurora
-      function openAuroraChat() {
-        alert("Abrir conversa com Aurora!");
-        // Aqui você pode redirecionar ou abrir modal
-      }
-
-
-      //Lembretes excluir e check
-      function renderReminders(reminders) {
-        const container = document.getElementById('remindersContainer');
-        container.innerHTML = '';
-        reminders.forEach((reminder) => {
-          const reminderDiv = document.createElement('div');
-          reminderDiv.className = 'reminder-card';
-          reminderDiv.setAttribute('tabindex', '-1');
-          reminderDiv.setAttribute('role', 'listitem');
-
-          // Adiciona classe "completed" se o lembrete já foi marcado
-          if (reminder.completed) reminderDiv.classList.add('completed');
-
-          reminderDiv.innerHTML = `
-          <div class="reminder-icon" aria-hidden="true">${reminderIconSVG}</div>
-            <div class="reminder-text">
-              <div class="reminder-title">${escapeHTML(reminder.title)}</div>
-              <div>${escapeHTML(reminder.description)}</div>
-          </div>
-            <div class="reminder-actions" style="margin-left:auto; display:flex; gap:8px;">
-              <!-- Concluir -->
-              <button class="complete-btn" aria-label="Concluir lembrete" title="Concluir">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#758352" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                  <path d="M20 6L9 17l-5-5"/>
-                </svg>
-              </button>
-              <!-- Excluir -->
-              <button class="delete-btn" aria-label="Excluir lembrete" title="Excluir">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#c7b19a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                  <line x1="18" y1="6" x2="6" y2="18"/>
-                  <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-              </button>
-            </div>
-        `;
-          container.appendChild(reminderDiv);
-
-          // Eventos dos botões
-          reminderDiv.querySelector('.complete-btn').addEventListener('click', () => {
-            const isDone = reminderDiv.classList.toggle('completed'); // adiciona/remove classe
-            if (isDone) {
-              reminderDiv.style.opacity = '0.5';
-              reminderDiv.style.textDecoration = 'line-through';
-            } else {
-              reminderDiv.style.opacity = '1';
-              reminderDiv.style.textDecoration = 'none';
-            }
-          });
-
-          // Excluir lembrete
-          reminderDiv.querySelector('.delete-btn').addEventListener('click', () => {
-            const reminders = loadReminders().filter(r => r.id !== reminder.id);
-            saveReminders(reminders);
-            renderReminders(reminders);
-          });
-        });
-      }
-
-      //Configuração teste
-      document.getElementById('settingsBtn').addEventListener('click', () => {
-        alert('Abrir configurações...');
       });
+      // excluir
+      reminderDiv.querySelector('.delete-btn').addEventListener('click', () => {
+        const updated = reminders.filter(r => r.id !== reminder.id);
+        saveReminders(updated);
+        renderReminders(updated);
+      });
+    });
+  }
+
+  // --- MODAL ---
+  const lembreteModal = document.getElementById("lembreteModal");
+  const addReminderBtn = document.getElementById("addReminderBtn");
+  const closeLembrete = document.getElementById("closeLembrete");
+  const formLembrete = document.getElementById("formLembrete");
 
 
-    })();
-  </script>
+  // Novo: modal de confirmação
+  const confirmModal2 = document.getElementById("confirmModal2");
+
+  addReminderBtn.addEventListener("click", () => {
+    lembreteModal.style.display = "flex";
+  });
+  closeLembrete.addEventListener("click", () => {
+    lembreteModal.style.display = "none";
+  });
+  window.addEventListener("click", (e) => {
+    if (e.target === lembreteModal) lembreteModal.style.display = "none";
+  });
+
+  formLembrete.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const reminders = loadReminders();
+    const newId = reminders.length ? reminders[reminders.length - 1].id + 1 : 1;
+
+    const lembrete = {
+      id: newId,
+      title: formLembrete.querySelector("select").value + " - " +
+             formLembrete.querySelector("input[placeholder='Digite o local']").value,
+      description:
+        formLembrete.querySelector("input[placeholder='Nome do doutor']").value + " | " +
+        formLembrete.querySelector("input[type='date']").value + " " +
+        formLembrete.querySelector("input[type='time']").value + " " +
+        (formLembrete.querySelector("textarea").value || "")
+    };
+
+    reminders.push(lembrete);
+    saveReminders(reminders);
+    renderReminders(reminders);
+
+    formLembrete.reset();
+    lembreteModal.style.display = "none";
+
+     // Abrir modal de confirmação
+    confirmModal2.style.display = "none";
+  });
+
+  // --- INIT ---
+  function init() {
+    updateDate();
+    updateGreeting();
+    renderReminders(loadReminders());
+  }
+  window.addEventListener('load', init);
+
+})();
+</script>
+
+
 
   <script>
     const modal = document.getElementById("triagemModal");
