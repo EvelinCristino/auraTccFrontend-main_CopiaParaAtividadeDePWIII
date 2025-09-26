@@ -7,16 +7,15 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
   <link rel="stylesheet" href="css/login.css" />
-
 </head>
 <body class="min-h-screen flex items-center justify-center">
   <main class="max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-lg grid md:grid-cols-2">
-    <!-- Image and hero left panel for desktop -->
+    <!-- Image Panel -->
     <section id="img-section" class="hidden md:flex items-center justify-center p-12">
       <div class="relative w-full max-w-md rounded-xl overflow-hidden" aria-hidden="true">
         <img 
           src="img/cad e log/Image_login.png" 
-          alt="Serene illustration in soft green hues showing a person sitting cross-legged meditating surrounded by large stylized flowers and soft glowing leaves, creating a calm and peaceful atmosphere" 
+          alt="Ilustração de pessoa meditando em tons verdes" 
           class="w-full h-auto rounded-xl object-cover" 
           onerror="this.style.display='none'"
         />
@@ -26,11 +25,11 @@
     <!-- Login Form Panel -->
     <section class="flex flex-col p-10 md:p-20 justify-center gap-6">
       <header class="flex items-center gap-3 mb-4">
-       <img 
+        <img 
           src="img/Logo.png" width="30px" height="30px"
-          alt="Logo do AURA - Uma flor de lotus verde"
+          alt="Logo do AURA"
           onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/cbb07639-b571-4e20-96a1-0612aa286c2d.png';"
-         />
+        />
         <span class="font-semibold text-xl select-none">AURA</span>
       </header>
       <h1 class="text-3xl font-extrabold leading-tight select-none">
@@ -40,17 +39,15 @@
         Coloque seu email e senha para acessar sua conta.
       </h2>
 
-      <form class="flex flex-col gap-5 max-w-md w-full" novalidate>
+      <form id="loginForm" class="flex flex-col gap-5 max-w-md w-full" novalidate>
         <label for="email" class="font-semibold text-sm select-none">Email</label>
         <input 
           id="email" 
           name="email" 
           type="email" 
-          placeholder="" 
           required 
           autocomplete="email"
           class="input-custom" 
-          aria-describedby="emailHelp"
         />
         
         <label for="password" class="font-semibold text-sm select-none">Senha</label>
@@ -58,11 +55,9 @@
           id="password" 
           name="password" 
           type="password" 
-          placeholder="" 
           required 
           autocomplete="current-password" 
           class="input-custom" 
-          aria-describedby="passwordHelp"
         />
 
         <div class="flex items-center justify-between text-sm">
@@ -73,27 +68,68 @@
           <a href="#" class="forgot-link" tabindex="0">Esqueceu sua Senha?</a>
         </div>
 
-        <a href="dashboard/dashboard-home.html" type="submit" class="btn-login w-full rounded-lg mt-4" aria-label="Log in to Aura account">
+        <button type="submit" class="btn-login w-full rounded-lg mt-4" aria-label="Log in to Aura account">
           Login
-        </a>
+        </button>
       </form>
     </section>
   </main>
 
-  <!-- Mobile version adjustments with minimal changes in layout -->
-  <script>
-    function adjustMobileHeader() {
-      const heading = document.querySelector('h1');
-      if(window.innerWidth < 768){
-        heading.innerHTML = 'Bem-vindo<br>de volta';
-      } else {
-        heading.innerHTML = 'Bem-vindo <span class="hidden md:inline">de volta</span>';
-      }
+<script>
+  // Ajuste do título no mobile
+  function adjustMobileHeader() {
+    const heading = document.querySelector('h1');
+    if(window.innerWidth < 768){
+      heading.innerHTML = 'Bem-vindo<br>de volta';
+    } else {
+      heading.innerHTML = 'Bem-vindo <span class="hidden md:inline">de volta</span>';
     }
-    window.addEventListener('resize', adjustMobileHeader);
-    window.addEventListener('DOMContentLoaded', adjustMobileHeader);
-  </script>
+  }
+  window.addEventListener('resize', adjustMobileHeader);
+  window.addEventListener('DOMContentLoaded', adjustMobileHeader);
+
+  // LOGIN com fetch
+  const loginForm = document.getElementById('loginForm');
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+      alert("⚠️ Preencha todos os campos!");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("⚠️ Email inválido!");
+      return;
+    }
+
+    const payload = { email, senha: password };
+
+    try {
+      const response = await fetch("https://auratccbackend.onrender.com/api/profissionais/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("✅ Login realizado com sucesso!");
+        // Você pode salvar token ou id do usuário no localStorage, se o backend retornar
+        if(data.token) localStorage.setItem('token', data.token);
+        window.location.href = "dashboard/dashboard-home.html";
+      } else {
+        alert("❌ Erro no login: " + (data.erro || JSON.stringify(data)));
+      }
+    } catch (error) {
+      console.error(error);
+      alert("❌ Falha na conexão com o servidor.");
+    }
+  });
+</script>
 </body>
-
 </html>
-
