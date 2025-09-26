@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
@@ -9,10 +8,9 @@
   <link rel="icon" type="image/x-icon" href="img/logo-janela.png">
   <link rel="stylesheet" href="css/cadastro.css" />
 </head>
-  
 <body class="min-h-screen flex items-center justify-center bg-gray-50">
   <main class="max-w-6xl w-full bg-white rounded-xl overflow-hidden shadow-lg grid md:grid-cols-2 relative">
-    
+
     <!-- Painel de formulário -->
     <section class="flex flex-col p-6 md:p-12 justify-center gap-4">
       <header class="flex items-center gap-3 mb-4">
@@ -26,7 +24,7 @@
 
       <!-- Barra de progresso -->
       <div class="w-full h-2 rounded-full bg-gray-200 overflow-hidden">
-            <div id="progress-bar" class="h-2 bg-[#758352] rounded-full transition-all duration-500 w-1/2"></div>
+        <div id="progress-bar" class="h-2 bg-[#758352] rounded-full transition-all duration-500 w-1/2"></div>
       </div>
 
       <!-- Título -->
@@ -36,37 +34,37 @@
       </h2>
 
       <!-- FORM MULTI-STEP -->
-      <form id="cadastroForm" class="flex flex-col gap-5 max-w-md w-full" action="#" method="POST" novalidate>
+      <form id="cadastroForm" class="flex flex-col gap-5 max-w-md w-full" novalidate>
         
         <!-- === ETAPA 1 === -->
         <div id="step1" class="flex flex-col gap-5">
           <label for="name" class="font-semibold text-sm select-none">Nome Completo</label>
           <input id="name" name="name" type="text" required autocomplete="name" class="input-custom" />
           
-        <div class="flex flex-col md:flex-row gap-5">
+          <div class="flex flex-col md:flex-row gap-5">
             <div class="flex-grow">
-                <label for="cpf" class="font-semibold text-sm select-none">CPF</label>
-                <input id="cpf" name="cpf" type="text" required autocomplete="off" class="input-custom" />
+              <label for="cpf" class="font-semibold text-sm select-none">CPF</label>
+              <input id="cpf" name="cpf" type="text" maxlength="14" required autocomplete="off" class="input-custom" />
             </div>
             <div class="flex-grow">
-                <label for="crm" class="font-semibold text-sm select-none">CRM</label>
-                <input id="crm" name="crm" type="text" required autocomplete="off" class="input-custom" />
+              <label for="crp" class="font-semibold text-sm select-none">CRP</label>
+              <input id="crp" name="crp" type="text" required autocomplete="off" class="input-custom" />
             </div>
-        </div> 
+          </div> 
 
           <label for="email" class="font-semibold text-sm select-none">Email</label>
           <input id="email" name="email" type="email" required autocomplete="email" class="input-custom" />
 
-        <div class="flex flex-col md:flex-row gap-5">
-          <div class="flex-grow">
-            <label for="password" class="font-semibold text-sm select-none">Senha</label>
-            <input id="password" name="password" type="password" required autocomplete="new-password" class="input-custom" />
+          <div class="flex flex-col md:flex-row gap-5">
+            <div class="flex-grow">
+              <label for="password" class="font-semibold text-sm select-none">Senha</label>
+              <input id="password" name="password" type="password" required autocomplete="new-password" class="input-custom" />
+            </div>
+            <div class="flex-grow">
+              <label for="password-confirm" class="font-semibold text-sm select-none">Confirmação de Senha</label>
+              <input id="password-confirm" name="password-confirm" type="password" required autocomplete="new-password" class="input-custom" />
+            </div>
           </div>
-          <div class="flex-grow">
-            <label for="password-confirm" class="font-semibold text-sm select-none">Confirmação de Senha</label>
-            <input id="password-confirm" name="password-confirm" type="password" required autocomplete="new-password" class="input-custom" />
-          </div>
-        </div>
 
           <button type="button" id="nextBtn" class="btn-submit w-full rounded-lg mt-4" aria-label="Botão para continuar">
             Continuar
@@ -74,67 +72,63 @@
         </div>
 
         <!-- === ETAPA 2 === -->
-    <div id="step2" class="flex flex-col gap-5 hidden">
-        <label class="font-semibold text-sm select-none">Qual é o seu tipo de atuação?</label>
-    <div class="flex gap-4">
-        <label class="flex items-center gap-2" for="atuacao" >
-        <input type="radio" id="atuacao" name="atuacao" value="clinica" class="accent-lime-400"/> Atuação em Clínica
-        </label>
-        <label class="flex items-center gap-2">
-        <input type="radio" name="atuacao" value="autonomo" class="accent-lime-400"/> Atendimento próprio
-        </label>
-    </div>
+        <div id="step2" class="flex flex-col gap-5 hidden">
+          <label class="font-semibold text-sm select-none">Qual é o seu tipo de atuação?</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="atuacao" value="clinica" class="accent-lime-400"/> Atuação em Clínica
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="radio" name="atuacao" value="atendimento próprio" class="accent-lime-400"/> Atendimento próprio
+            </label>
+          </div>
 
-    <!-- Valor da consulta -->
-    <label class="font-semibold text-sm select-none">Qual o valor da sua consulta?</label>
-    <select name="valor" class="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-lime-400">
-        <option value="" disabled selected>Selecione...</option>
-        <option value="100">R$ 100 - R$ 150</option>
-        <option value="150">R$ 200 - R$ 250</option>
-        <option value="200">R$ 300 - R$ 350</option>
-        <option value="250">Acima de R$ 400</option>
-    </select>
+          <label class="font-semibold text-sm select-none">Qual o valor da sua consulta?</label>
+          <select name="valor" required class="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-lime-400">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="100-150">R$ 100 - R$ 150</option>
+            <option value="200-250">R$ 200 - R$ 250</option>
+            <option value="300-350">R$ 300 - R$ 350</option>
+            <option value="400+">Acima de R$ 400</option>
+          </select>
 
-    <!-- Convênios -->
-     <label class="font-semibold text-sm select-none">Quais convênios você atende?</label>
-    <select name="convenio" class="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-lime-400">
-        <option value="" disabled selected>Selecione...</option>
-        <option value="unimed">Unimed</option>
-        <option value="bradesco">Bradesco Saúde</option>
-        <option value="amil">Amil</option>
-        <option value="sulamerica">SulAmérica</option>
-        <option value="hapvida">Hapvida</option>
-    </select>
+          <label class="font-semibold text-sm select-none">Quais convênios você atende?</label>
+          <select name="convenio" class="border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-lime-400">
+            <option value="" disabled selected>Selecione...</option>
+            <option value="unimed">Unimed</option>
+            <option value="bradesco">Bradesco Saúde</option>
+            <option value="amil">Amil</option>
+            <option value="sulamerica">SulAmérica</option>
+            <option value="hapvida">Hapvida</option>
+          </select>
 
-    <!-- Modalidade de atendimento -->
-     <label class="font-semibold text-sm select-none">Qual é a sua modalidades de atendimento?</label>
-    <div class="flex gap-4">
-        <label class="flex items-center gap-2">
-        <input type="checkbox" name="modalidade" value="online" class="accent-lime-400"/> Online
-        </label>
-        <label class="flex items-center gap-2">
-        <input type="checkbox" name="modalidade" value="presencial" class="accent-lime-400"/> Presencial
-        </label>
-        <label class="flex items-center gap-2">
-        <input type="checkbox" name="modalidade" value="hibrido" class="accent-lime-400"/> Híbrido
-        </label>
-    </div>
+          <label class="font-semibold text-sm select-none">Qual é a sua modalidade de atendimento?</label>
+          <div class="flex gap-4">
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="modalidade" value="online" class="accent-lime-400"/> Online
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="modalidade" value="presencial" class="accent-lime-400"/> Presencial
+            </label>
+            <label class="flex items-center gap-2">
+              <input type="checkbox" name="modalidade" value="hibrido" class="accent-lime-400"/> Híbrido
+            </label>
+          </div>
 
-    <!-- Botões -->
-    <div class="flex justify-between gap-4">
-        <button type="button" id="backBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg transition">
-        Voltar
-        </button>
-        <a  href="login_prof.html" type="submit" id="nextBtn" class="btn-submit w-full text-white font-bold py-3 px-6 rounded-lg transition" aria-label="Cadastrar">
-        Cadastrar
-        </a>
-    </div>
-    </div>
+          <div class="flex justify-between gap-4">
+            <button type="button" id="backBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-lg transition">
+              Voltar
+            </button>
+            <button type="submit" class="btn-submit w-full text-white font-bold py-3 px-6 rounded-lg transition" aria-label="Cadastrar">
+              Cadastrar
+            </button>
+          </div>
         </div>
-
       </form>
 
-      <p class="text-sm text-gray-400 text-center mt-4">Já tem uma conta? <a href="login.html" class="forgot-link">Login</a></p>
+      <p class="text-sm text-gray-400 text-center mt-4">Já tem uma conta? 
+        <a href="login.html" class="forgot-link">Login</a>
+      </p>
     </section>
 
     <!-- Painel ilustrativo -->
@@ -142,41 +136,121 @@
       <div class="relative w-full max-w-md rounded-xl overflow-hidden" aria-hidden="true">
         <img 
           src="img/cad e log/Image_cad_prof.png" 
-          alt="Illustration showing a seated patient talking to a therapist appearing via video call on a laptop on a table in soft green gradient background" 
+          alt="Illustration showing a seated patient talking to a therapist via video call" 
           class="w-full h-auto rounded-xl object-cover" 
           onerror="this.style.display='none'"
         />
         <div class="left-bottom-text">Cadastro para <b>Profissionais de Psicologia</b></div>
       </div>
     </section>
-
-    <!-- Back Button -->
-    <button class="back-button" aria-label="Voltar para Profissional">
-      <span class="back-arrow" aria-hidden="true"></span> Paciente
-    </button>
-
   </main>
 
-  <script>
-    const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
-    const nextBtn = document.getElementById("nextBtn");
-    const backBtn = document.getElementById("backBtn");
-    const progressBar = document.getElementById("progress-bar");
+<script>
+// Máscara CPF (formatação para visualização)
+const cpfInput = document.getElementById("cpf");
+cpfInput.addEventListener("input", () => {
+  let v = cpfInput.value.replace(/\D/g, "");
+  if (v.length > 11) v = v.slice(0, 11);
+  v = v.replace(/(\d{3})(\d)/, "$1.$2");
+  v = v.replace(/(\d{3})(\d)/, "$1.$2");
+  v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  cpfInput.value = v;
+});
 
-    nextBtn.addEventListener("click", () => {
-        step1.classList.add("hidden");
-        step2.classList.remove("hidden");
-        progressBar.classList.add("w-full");   // barra inteira
-        progressBar.classList.remove("w-1/2"); // remove metade
+const step1 = document.getElementById("step1");
+const step2 = document.getElementById("step2");
+const nextBtn = document.getElementById("nextBtn");
+const backBtn = document.getElementById("backBtn");
+const progressBar = document.getElementById("progress-bar");
+
+nextBtn.addEventListener("click", () => {
+  step1.classList.add("hidden");
+  step2.classList.remove("hidden");
+  progressBar.classList.add("w-full");
+  progressBar.classList.remove("w-1/2");
+});
+
+backBtn.addEventListener("click", () => {
+  step2.classList.add("hidden");
+  step1.classList.remove("hidden");
+  progressBar.classList.add("w-1/2");
+  progressBar.classList.remove("w-full");
+});
+
+// SUBMIT
+const form = document.getElementById("cadastroForm");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Coleta dados
+  const nomeCompleto = document.getElementById("name").value.trim();
+  const cpfFormatado = cpfInput.value.trim();
+  const cpfNumerico = cpfFormatado.replace(/\D/g, ""); // ✅ Remove formatação
+  const crp = document.getElementById("crp").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("password").value;
+  const confirmacaoSenha = document.getElementById("password-confirm").value;
+
+  const tipoAtuacao = document.querySelector('input[name="atuacao"]:checked')?.value;
+  const valorConsulta = document.querySelector('select[name="valor"]').value;
+  const convenioSelecionado = document.querySelector('select[name="convenio"]').value;
+  const convenios = convenioSelecionado ? [convenioSelecionado] : [];
+  const modalidadesAtendimento = Array.from(document.querySelectorAll('input[name="modalidade"]:checked')).map(el => el.value);
+
+  // === Validações Frontend ===
+  if (!nomeCompleto || !cpfNumerico || !crp || !email || !senha || !confirmacaoSenha || !tipoAtuacao || !valorConsulta) {
+    alert("⚠️ Preencha todos os campos obrigatórios!");
+    return;
+  }
+
+  if (!/^\d{11}$/.test(cpfNumerico)) {
+    alert("⚠️ CPF inválido. Use apenas números (11 dígitos).");
+    return;
+  }
+
+  if (senha !== confirmacaoSenha) {
+    alert("⚠️ As senhas não coincidem!");
+    return;
+  }
+
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    alert("⚠️ Email inválido!");
+    return;
+  }
+
+  // Monta payload final
+  const payload = {
+    nomeCompleto,
+    cpf: cpfNumerico,
+    crp,
+    email,
+    senha,
+    tipoAtuacao,
+    valorConsulta,
+    convenios,
+    modalidadesAtendimento
+  };
+
+  try {
+    const response = await fetch("https://auratccbackend.onrender.com/api/profissionais", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
 
-    backBtn.addEventListener("click", () => {
-        step2.classList.add("hidden");
-        step1.classList.remove("hidden");
-        progressBar.classList.add("w-1/2");    // volta para metade
-        progressBar.classList.remove("w-full");
-    });
-  </script>
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("✅ Cadastro realizado com sucesso!");
+      window.location.href = "login_prof.html";
+    } else {
+      alert("❌ Erro: " + (data.erro || JSON.stringify(data)));
+    }
+  } catch (error) {
+    console.error(error);
+    alert("❌ Falha na conexão com o servidor.");
+  }
+});
+</script>
 </body>
 </html>
