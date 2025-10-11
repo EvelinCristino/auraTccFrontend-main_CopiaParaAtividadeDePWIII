@@ -635,7 +635,7 @@
 
     <script>
         let usuarioLat = null, usuarioLon = null, cidadeUsuario = "Carapicuíba";
-        let profissionaisAtuais = []; // Variável para armazenar os profissionais atualmente exibidos
+        //let profissionaisAtuais = []; // Variável para armazenar os profissionais atualmente exibidos
 
         function calcularDistancia(lat1, lon1, lat2, lon2) {
             const R = 6371;
@@ -699,55 +699,6 @@
             }
         ];
 
-        function renderizarProfissionais(lista) {
-            const container = document.getElementById('profissionais-container');
-            container.innerHTML = "";
-            profissionaisAtuais = lista; // Atualiza a lista de profissionais atuais
-            
-            lista.forEach((p, index) => {
-                let distanciaTexto = "";
-                if (usuarioLat && usuarioLon) {
-                    const dist = calcularDistancia(usuarioLat, usuarioLon, p.lat, p.lon);
-                    distanciaTexto = `🚶 ${dist.toFixed(1)} km`;
-                }
-                container.innerHTML += `
-            <div class="card-profissional" data-index="${index}">
-                <div class="card-topo">
-                    <div>
-                        <div class="card-nome">${p.nome}</div>
-                        <div class="card-descricao">${p.descricao}</div>
-                        <div class="card-telefone">📞 ${p.telefone}</div>
-                    </div>
-                    <div class="card-distancia">${distanciaTexto}</div>
-                </div>
-            </div>
-        `;
-            });
-            
-            // Adiciona event listeners para cada card
-            document.querySelectorAll('.card-profissional').forEach(card => {
-                card.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    abrirModal(index);
-                });
-            });
-        }
-
-        function abrirModal(index) {
-            const p = profissionaisAtuais[index];
-
-            document.getElementById("modal-nome").textContent = p.nome;
-            document.getElementById("modal-descricao").textContent = `${p.descricao}. Sou ${p.nome}, atuo desde 2010.`;
-            document.getElementById("modal-cidade").textContent = p.cidade;
-            document.getElementById("modal-endereco").textContent = p.endereco;
-            document.getElementById("modal-linkedin").textContent = "LinkedIn: " + p.linkedin;
-            document.getElementById("modal-email").textContent = "E-mail: " + p.email;
-            document.getElementById("modal-telefone").textContent = "Telefone: " + p.telefone;
-            document.getElementById("modal-atendimento").textContent = "Atendimento: " + p.atendimento;
-            document.getElementById("modal-convenios").textContent = "Convênios aceitos: " + p.conveniosAceitos;
-
-            document.getElementById("overlay").style.display = "flex";
-        }
 
         function abrirLocalizacao() {
             const escolha = confirm("Deseja usar sua localização atual?");
@@ -822,30 +773,157 @@
         document.getElementById("botao-filtrar").addEventListener("click", aplicarFiltro);
     </script>
 
-    <script>
-        const overlay = document.getElementById("overlay");
-        const btnFechar = document.getElementById("fecharModal");
+<script>
+/* Variável global com a lista atual (vinda da API ou filtros) */
+let profissionaisAtuais = [];
 
-        function fecharModal() { 
-            overlay.style.display = "none"; 
+/* renderizarProfissionais: mantém a ideia original — recebe uma lista e mostra os cards */
+function renderizarProfissionais(lista) {
+    profissionaisAtuais = Array.isArray(lista) ? lista : [];
+
+    const container = document.getElementById('profissionais-container');
+    container.innerHTML = '';
+
+    if (!profissionaisAtuais.length) {
+        container.innerHTML = '<p style="color:#4F3422;">Nenhum profissional cadastrado ainda.</p>';
+        return;
+    }
+
+    profissionaisAtuais.forEach((p, index) => {
+        const card = document.createElement('div');
+        card.className = 'card-profissional';
+        card.setAttribute('data-index', index);
+
+        // campos do seu JSON: nomeCompleto, tipoAtuacao, email, valorConsulta, convenios, modalidadesAtendimento
+        const nome = p.nomeCompleto || 'Sem nome';
+        const tipo = p.tipoAtuacao || 'Sem tipo definido';
+        const valor = p.valorConsulta || 'Não informado';
+        const convenios = Array.isArray(p.convenios) && p.convenios.length ? p.convenios.join(', ') : 'Nenhum';
+        const modalidades = Array.isArray(p.modalidadesAtendimento) && p.modalidadesAtendimento.length ? p.modalidadesAtendimento.join(', ') : 'Não informado';
+        const email = p.email || '';
+
+        card.innerHTML = `
+            <div class="card-topo">
+                <div>
+                    <div class="card-nome">${nome}</div>
+                    <div class="card-descricao">${tipo}</div>
+                </div>
+            </div>
+            <div class="card-telefone">E-mail: ${email}</div>
+            <div class="card-telefone">Valor: ${valor}</div>
+            <div class="card-telefone">Convênios: ${convenios}</div>
+            <div class="card-telefone">Modalidade: ${modalidades}</div>
+        `;
+
+        // evento de abrir modal — chama abrirModal com o índice correto
+        card.addEventListener('click', () => abrirModal(index));
+
+        container.appendChild(card);
+    });
+}
+
+/* carregarProfissionais: busca da API e chama renderizarProfissionais */
+async function carregarProfissionais() {
+    const container = document.getElementById('profissionais-container');
+    container.innerHTML = '<p style="color:#4F3422;">Carregando profissionais...</p>';
+
+    try {
+        const response = await fetch('https://auratccbackend.onrender.com/api/profissionais', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao buscar profissionais: ' + response.status);
         }
 
-        // deixa disponíveis para uso no HTML
-        window.fecharModal = fecharModal;
+        const profissionais = await response.json();
 
-        // fecha no X
-        btnFechar.addEventListener("click", fecharModal);
+        if (!Array.isArray(profissionais) || profissionais.length === 0) {
+            container.innerHTML = '<p style="color:#4F3422;">Nenhum profissional cadastrado ainda.</p>';
+            profissionaisAtuais = [];
+            return;
+        }
 
-        // fecha clicando fora
-        overlay.addEventListener("click", (e) => {
+        renderizarProfissionais(profissionais);
+
+    } catch (erro) {
+        console.error('Erro ao carregar profissionais:', erro);
+        container.innerHTML = '<p style="color:red;">Erro ao carregar profissionais. Tente novamente mais tarde.</p>';
+    }
+}
+
+/* abrirModal: usa profissionaisAtuais[index] e preenche o modal já existente no HTML */
+function abrirModal(index) {
+    const p = profissionaisAtuais[index];
+    if (!p) {
+        console.error('Profissional não encontrado para index:', index);
+        return;
+    }
+
+    // Mapeamento seguro dos campos do JSON
+    const nome = p.nomeCompleto || p.nome || 'Sem nome';
+    const descricao = p.tipoAtuacao || p.descricao || '';
+    const cidade = p.cidade || '';
+    const endereco = p.endereco || '';
+    const linkedin = p.linkedin || '';
+    const email = p.email || '';
+    const telefone = p.telefone || '';
+    const atendimento = (Array.isArray(p.modalidadesAtendimento) ? p.modalidadesAtendimento.join(', ') : (p.atendimento || 'Não informado'));
+    const conveniosAceitos = Array.isArray(p.convenios) && p.convenios.length ? p.convenios.join(', ') : 'Nenhum';
+    const valor = p.valorConsulta || p.valor || 'Não informado';
+
+    // Preenche os elementos do modal (os IDs já existem no seu HTML)
+    document.getElementById("modal-nome").textContent = nome;
+    // descrição — montamos uma string curta com tipo + valor
+    document.getElementById("modal-descricao").textContent = `${descricao}${descricao ? ' • ' : ''}Valor: ${valor}`;
+    document.getElementById("modal-cidade").textContent = cidade;
+    document.getElementById("modal-endereco").textContent = endereco;
+    document.getElementById("modal-linkedin").textContent = linkedin ? `LinkedIn: ${linkedin}` : '';
+    document.getElementById("modal-email").textContent = email ? `E-mail: ${email}` : '';
+    document.getElementById("modal-telefone").textContent = telefone ? `Telefone: ${telefone}` : '';
+    document.getElementById("modal-atendimento").textContent = `Atendimento: ${atendimento}`;
+    document.getElementById("modal-convenios").textContent = `Convênios aceitos: ${conveniosAceitos}`;
+
+    // Mostra o overlay/modal (seu HTML já tem #overlay com display none por padrão)
+    const overlay = document.getElementById('overlay');
+    if (overlay) overlay.style.display = 'flex';
+}
+
+/* fecharModal: fecha o overlay */
+function fecharModal() {
+    const overlay = document.getElementById('overlay');
+    if (overlay) overlay.style.display = 'none';
+}
+
+/* Ligar eventos do modal (botão fechar e clique fora do modal) */
+document.addEventListener('DOMContentLoaded', () => {
+    // Carrega profissionais da API assim que a página carregar
+    carregarProfissionais();
+
+    // Fechar pelo ícone
+    const btnFechar = document.getElementById('fecharModal');
+    if (btnFechar) btnFechar.addEventListener('click', fecharModal);
+
+    // Fechar clicando fora da caixa do modal (no overlay)
+    const overlay = document.getElementById('overlay');
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            // se o clique foi no overlay (fora do .modal), fecha
             if (e.target === overlay) fecharModal();
         });
+    }
+});
 
-        // Inicializa a página com os profissionais
-        document.addEventListener('DOMContentLoaded', function() {
-            renderizarProfissionais(profissionaisOriginais);
-        });
-    </script>
+/* Exporta globalmente se outras partes do seu código usarem (ex.: aplicarFiltro chama renderizarProfissionais) */
+window.renderizarProfissionais = renderizarProfissionais;
+window.carregarProfissionais = carregarProfissionais;
+window.abrirModal = abrirModal;
+window.fecharModal = fecharModal;
+</script>
+
+
+
 </body>
 
 </html>
